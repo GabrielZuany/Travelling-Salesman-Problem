@@ -30,3 +30,29 @@
 ```
 
 ---
+
+## 2) Project Structure:
+
+- text...
+
+---
+
+## 3) The Travelling Salesman Problem:
+
+- text...
+
+---
+
+## 4) How we solved it (implementation details):
+
+- text...
+
+---
+
+## 5) Final Assignments:
+
+- Search and Sorting Algorithms grade project proposed by UFES.
+- Made by: Gabriel Zuany, Áurea Santos e Miguel Gewehr.
+- Date: 22/09/2023
+
+---
