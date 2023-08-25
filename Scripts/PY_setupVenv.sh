@@ -17,20 +17,20 @@ echo -e $GREEN -----
 echo "==============| Criando Ambiente de Desenvolvimento Virtual Python |=========="
 echo -e ----- $NC
 
-python3 -m venv venv
+python3 -m venv .VirtualEnvironment
 
 echo -e $GREEN -----
 echo "==============| Ativando Ambiente de Desenvolvimento Virtual Python |=========="
 echo -e ----- $NC
 
-chmod +x venv/bin/activate
-source venv/bin/activate
+chmod +x .VirtualEnvironment/bin/activate
+source .VirtualEnvironment/bin/activate
 
 echo -e $GREEN -----
 echo "=====================| Instalando Dependências do Projeto |===================="
 echo -e ----- $NC
 
-pip install -r requirements.txt
+pip install -r Scripts/requirements.txt
 
 echo -e $GREEN -----
 echo Ambiente de Desenvolvimento Virtual Python configurado com sucesso!

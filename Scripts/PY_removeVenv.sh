@@ -6,6 +6,6 @@ echo -e $RED "=> Desativando Ambiente de Desenvolvimento Virtual Python..."
 deactivate
 
 echo -e $RED "=> Removendo Ambiente de Desenvolvimento Virtual Python..."
-rm -rf venv
+rm -rf .VirtualEnvironment
 
 echo -e $GREEN "=> Ambiente de Desenvolvimento Virtual Python removido com sucesso!"

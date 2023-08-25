@@ -6,7 +6,7 @@ echo -e $GREEN -----
 echo "==============| Ativando Ambiente de Desenvolvimento Virtual Python |=========="
 echo -e ----- $NC
 
-source venv/bin/activate
+source .VirtualEnvironment/bin/activate
 
 echo -e $BLUE Iniciando Visual Studio Code... $NC
 code .
