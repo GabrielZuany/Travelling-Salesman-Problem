@@ -1,4 +1,4 @@
-
+#! /bin/bash
 GREEN='\033[0;32m' 
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
@@ -24,6 +24,8 @@ echo "==============| Ativando Ambiente de Desenvolvimento Virtual Python |=====
 echo -e ----- $NC
 
 chmod +x .VirtualEnvironment/bin/activate
+chmod +x Scripts/PY_removeVenv.sh
+chmod +x Scripts/PY_init.sh
 source .VirtualEnvironment/bin/activate
 
 echo -e $GREEN -----
