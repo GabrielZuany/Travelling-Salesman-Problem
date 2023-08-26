@@ -1,6 +1,7 @@
 #ifndef _UNION_FIND_
 #define _UNION_FIND_
 
+typedef struct tree_node tree_node;
 typedef struct union_find union_find;
 typedef int (*uf_compare_fn)(void*, void*);
 typedef void (*uf_destroy_fn)(void*, ...);
