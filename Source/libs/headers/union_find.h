@@ -27,10 +27,62 @@ union_find* uf_init(int size, uf_compare_fn compare_fn, uf_destroy_fn destroy_fn
  */
 void uf_destroy(union_find* uf);
 
-void* uf_find(union_find* uf, void* node);
+/**
+ * @brief Retrieves the data stored into tree_node datatype 
+ * 
+ * @param uf 
+ * @param priority 
+ * @return tree_node* 
+ * 
 
-void uf_union(union_find* uf, void* node1, void* node2);
+ */
+void* uf_find_data(union_find* uf, tree_node* node);
 
-bool uf_is_connected(union_find* uf, void* node1, void* node2);
+/**
+ * @brief Retrieves the node based in given priority value;
+ * 
+ * @param uf 
+ * @param priority 
+ * @return tree_node* 
+ *  
+ *  @note Complexity: O(1)
+ */
+tree_node* uf_find_node(union_find* uf, int priority);
+
+/**
+ * @brief Join 2 nodes using weighted quick sort
+ * 
+ * @param uf 
+ * @param node1 
+ * @param node2 
+ * 
+ * @note Complexity: O(log(n))
+ */
+void uf_union(union_find* uf, tree_node* node1, tree_node* node2);
+
+/**
+ * @brief 
+ * 
+ * @param uf 
+ * @param node1 
+ * @param node2 
+ * @return int 
+ * 
+ * @note Complexity: O(log(n))
+ */
+int uf_is_connected(union_find* uf, tree_node* node1, tree_node* node2);
+
+
+/**
+ * @brief Assigns a void* data value into a node previously allocacted
+ * 
+ * @param uf 
+ * @param new_node void* generic value
+ * @param priority priority (array position) in 'tree'.
+ * @return tree_node* 
+ * 
+ * @note Complexity: O(1)
+ */
+tree_node* uf_create_node(union_find* uf, void* new_node, int priority);
 
 #endif
