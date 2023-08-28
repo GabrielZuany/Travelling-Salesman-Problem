@@ -28,7 +28,7 @@ union_find* uf_init(int size, uf_compare_fn compare_fn, uf_destroy_fn destroy_fn
 void uf_destroy(union_find* uf);
 
 /**
- * @brief Retrieves the data stored into tree_node datatype 
+ * @brief Retrieves the root of a node.
  * 
  * @param uf 
  * @param priority 
@@ -36,7 +36,7 @@ void uf_destroy(union_find* uf);
  * 
  * @note Complexity: O(log(n))
  */
-void* uf_find_data(union_find* uf, tree_node* node);
+void* uf_find_root(union_find* uf, tree_node* node);
 
 /**
  * @brief Retrieves the node based in given priority value;
@@ -106,6 +106,18 @@ tree_node* uf_create_node(union_find* uf, void* new_node, int priority);
      * @note Complexity: O(n)
      */
     tree_node** _d_uf_fill_int_(union_find* uf);
+
+    /**
+     * @brief Prints a node (for debug/test purposes -> compile with $ args -D _DEV_)
+     * 
+     * @note Bind function
+     * 
+     * @param n 
+     * @param print_fn 
+     * 
+     * @note Complexity: O(1)
+     */
+    void _d_print_node_(tree_node* n, void (*print_fn)(void*));
 #endif
 
 #endif

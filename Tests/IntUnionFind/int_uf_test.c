@@ -10,6 +10,10 @@ void destroy_int(void* a, ...){
     free(a);
 }
 
+void print_int(void* a){
+    printf("%d ", *(int*)a);
+}
+
 int main(){
     union_find* uf = uf_init(10, cmp_int, destroy_int);
     tree_node** nodes = _d_uf_fill_int_(uf); // _DEV_
@@ -31,6 +35,13 @@ int main(){
     }
 
     _d_uf_print_(uf); // _DEV_
+
+    tree_node* node = uf_find_node(uf, 1);
+    printf("Node data: ");
+    _d_print_node_(node, print_int); // _DEV_
+
+    int* root = uf_find_root(uf, nodes[1]);
+    printf(" => Root: %d\n", *root);
     
     uf_destroy(uf);
     return 0;

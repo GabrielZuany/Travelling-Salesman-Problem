@@ -19,6 +19,11 @@ void destroy(void* a, ...){
     free(a);
 }
 
+void print_cell(void* a){
+    Cell* c = (Cell*)a;
+    printf("(%d, %d) ", c->x, c->y);
+}
+
 int main(){
     union_find* uf = uf_init(10, cmp, destroy);
     int size = 10;
@@ -52,6 +57,13 @@ int main(){
     }
 
     _d_uf_print_(uf); // _DEV_
+
+    tree_node* node = uf_find_node(uf, 7);
+    printf("Node data: ");
+    _d_print_node_(node, print_cell); // _DEV_
+
+    int* root = uf_find_root(uf, nodes[7]);
+    printf(" => Root: %d\n", *root);
     
     uf_destroy(uf);
     return 0;

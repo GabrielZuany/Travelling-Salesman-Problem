@@ -52,7 +52,7 @@ int _root_index(union_find* uf, int i){
     return i;
 }
 
-void* uf_find_data(union_find* uf, tree_node* node){
+void* uf_find_root(union_find* uf, tree_node* node){
     return uf->tree_nodes[_root_index(uf, node->_priority)].data;
 }
 
@@ -131,4 +131,10 @@ tree_node** _d_uf_fill_int_(union_find* uf){
     return nodes;
 }
 
+//function pointer
+void _d_print_node_(tree_node* n, void (*print_fn)(void*))
+{
+    print_fn(n->data);
+    printf(" => Priority: %d", n->_priority);
+}
 #endif
