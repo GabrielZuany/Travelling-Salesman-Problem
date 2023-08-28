@@ -53,7 +53,7 @@ int _root_index(union_find* uf, int i){
 }
 
 void* uf_find_data(union_find* uf, tree_node* node){
-    return node->data;
+    return uf->tree_nodes[_root_index(uf, node->_priority)].data;
 }
 
 tree_node* uf_find_node(union_find* uf, int priority){
@@ -95,3 +95,40 @@ int uf_is_connected(union_find* uf, tree_node* node1, tree_node* node2){
     tree_node n2 = uf->tree_nodes[n2_idx];
     return n1._priority == n2._priority;
 }
+
+#ifdef _DEV_
+void _d_uf_print_(union_find* uf){
+    for(int i = 0; i < uf->size; i++){
+        printf("%d ", i);
+    }
+    printf(" => ARR IDX\n");
+    for(int i = 0; i < uf->size; i++){
+        printf("| ");
+    }
+    printf("\n");
+    for(int i = 0; i < uf->size; i++){
+        printf("v ");
+    }
+    printf("\n");
+    for(int i = 0; i < uf->size; i++){
+        printf("%d ", uf->tree_nodes[i]._priority);
+    }
+    printf(" => PRIORITY\n");
+}
+
+tree_node** _d_uf_fill_int_(union_find* uf){
+    int size = uf->size;
+    int** arr = malloc(sizeof(int*) * size);
+    for(int i = 0; i < size; i++){
+        arr[i] = malloc(sizeof(int));
+        *arr[i] = i;
+    }
+
+    tree_node** nodes = malloc(sizeof(tree_node*) * size);
+    for(int i = 0; i < size; i++){
+        nodes[i] = uf_create_node(uf, arr[i], i);
+    }
+    return nodes;
+}
+
+#endif

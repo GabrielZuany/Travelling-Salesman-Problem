@@ -34,7 +34,7 @@ void uf_destroy(union_find* uf);
  * @param priority 
  * @return tree_node* 
  * 
-
+ * @note Complexity: O(log(n))
  */
 void* uf_find_data(union_find* uf, tree_node* node);
 
@@ -72,7 +72,6 @@ void uf_union(union_find* uf, tree_node* node1, tree_node* node2);
  */
 int uf_is_connected(union_find* uf, tree_node* node1, tree_node* node2);
 
-
 /**
  * @brief Assigns a void* data value into a node previously allocacted
  * 
@@ -84,5 +83,29 @@ int uf_is_connected(union_find* uf, tree_node* node1, tree_node* node2);
  * @note Complexity: O(1)
  */
 tree_node* uf_create_node(union_find* uf, void* new_node, int priority);
+
+#ifdef _DEV_
+    /**
+     * @brief Prints the union find data structure (for debug/test purposes -> compile with $ args -D _DEV_)
+     * 
+     * @note Bind function
+     * 
+     * @param uf 
+     * 
+     * @note Complexity: O(n)
+     */
+    void _d_uf_print_(union_find* uf);
+
+    /**
+     * @brief Fills the union find data structure with integers (for debug/test purposes -> compile with $ args -D _DEV_)
+     * 
+     * @note Bind function
+     * 
+     * @param uf 
+     * 
+     * @note Complexity: O(n)
+     */
+    tree_node** _d_uf_fill_int_(union_find* uf);
+#endif
 
 #endif
