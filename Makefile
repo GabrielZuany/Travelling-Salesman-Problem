@@ -35,11 +35,3 @@ uf_test_profiler_generic:
 	@./main
 	@gprof main gmon.out > Profiler/gprof.txt
 	@rm gmon.out
-
-heap_test_int:
-	@gcc -o main Source/libs/src/*.c Tests/IntHeap/*.c -g -D _DEV_ -lm
-	@echo 'Compilado!'
-
-heap_test_generic:
-	@gcc -o main Source/libs/src/*.c Tests/GenericHeap/*.c -g -D _DEV_ -lm
-	@echo 'Compilado!'
