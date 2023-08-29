@@ -92,14 +92,14 @@ void heap_push(Heap* heap, void* data, double priority) {
         heap->nodes = realloc(heap->nodes, sizeof(HeapNode) * heap->capacity);
     }
 
-    HeapNode* node = heap_find(heap, data);
-    if(node != NULL) {
-        if(node->priority > priority)
-            node->priority = priority;
-            heapify_up(heap, node->arr_idx);
-            heap->destructor_fn(data);
-            return;
-    }
+    //HeapNode* node = heap_find(heap, data);
+    //if(node != NULL) {
+    //    if(node->priority > priority)
+    //        node->priority = priority;
+    //        heapify_up(heap, node->arr_idx);
+    //        heap->destructor_fn(data);
+    //        return;
+    //}
 
     heap->nodes[heap->size].data = data;
     heap->nodes[heap->size].priority = priority;
@@ -176,8 +176,14 @@ void heap_sort(Heap* heap) {
 
 void heap_print(Heap* heap, void (*print_fn)(void*)) {
     int i = 0;
+    printf("Data: ");
     for (i = 0; i < heap->size; i++) {
         print_fn(heap->nodes[i].data);
+    }
+    printf("\n");
+    printf("Priority: ");
+    for (i = 0; i < heap->size; i++) {
+        printf("%.2f ", heap->nodes[i].priority);
     }
     printf("\n");
 }

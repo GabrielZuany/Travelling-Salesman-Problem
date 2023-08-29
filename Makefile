@@ -14,24 +14,32 @@ dev:
 	@gcc -o main Source/libs/src/*.c Source/*.c -Wall -g -D _DEV_ -lm
 	@echo 'Compilado!'
 
-test_int:
+uf_test_int:
 	@gcc -o main Source/libs/src/*.c Tests/IntUnionFind/*.c -g -D _DEV_ -lm
 	@echo 'Compilado!'
 	
-test_generic:
+uf_test_generic:
 	@gcc -o main Source/libs/src/*.c Tests/GenericUnionFind/*.c -g -D _DEV_ -lm
 	@echo 'Compilado!'
 
-test_profiler_int:
+uf_test_profiler_int:
 	@gcc -o main Source/libs/src/*.c Tests/IntUnionFind/*.c -g -D _DEV_ -lm -pg
 	@echo 'Compilado!'
 	@./main
 	@gprof main gmon.out > Profiler/gprof.txt
 	@rm gmon.out
 
-test_profiler_generic:
+uf_test_profiler_generic:
 	@gcc -o main Source/libs/src/*.c Tests/GenericUnionFind/*.c -g -D _DEV_ -lm -pg
 	@echo 'Compilado!'
 	@./main
 	@gprof main gmon.out > Profiler/gprof.txt
 	@rm gmon.out
+
+heap_test_int:
+	@gcc -o main Source/libs/src/*.c Tests/IntHeap/*.c -g -D _DEV_ -lm
+	@echo 'Compilado!'
+
+heap_test_generic:
+	@gcc -o main Source/libs/src/*.c Tests/GenericHeap/*.c -g -D _DEV_ -lm
+	@echo 'Compilado!'
