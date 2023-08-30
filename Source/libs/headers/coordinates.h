@@ -44,6 +44,17 @@ float coordinates_get_y(coordinates* c);
 void coordinates_destroy(coordinates* c);
 
 /**
+ * @brief Compare two coordinates
+ * 
+ * @param c1 
+ * @param c2 
+ * @return int 
+ * 
+ * @note Complexity: O(1)
+ */
+int coordinates_compare(void* c1, void* c2);
+
+/**
  * @brief Calculate the euclidean distance between two coordinates
  * 
  * @param c1 

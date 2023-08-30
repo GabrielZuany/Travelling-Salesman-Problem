@@ -28,6 +28,14 @@ void coordinates_destroy(coordinates* c){
     free(c);
 }
 
+int coordinates_compare(void* c1, void* c2){
+    coordinates* c1_casted = (coordinates*) c1;
+    coordinates* c2_casted = (coordinates*) c2;
+    if(c1_casted->x == c2_casted->x && c1_casted->y == c2_casted->y)
+        return 0;
+    return 1;
+}
+
 float coordinates_euclidean_distance(coordinates* c1, coordinates* c2){
     return euclidean_distance(c1->x, c1->y, c2->x, c2->y);
 }
