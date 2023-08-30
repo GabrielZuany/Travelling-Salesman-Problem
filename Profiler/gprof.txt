@@ -1,23 +1,15 @@
 Flat profile:
 
 Each sample counts as 0.01 seconds.
- no time accumulated
-
   %   cumulative   self              self     total           
- time   seconds   seconds    calls  Ts/call  Ts/call  name    
-  0.00      0.00     0.00       21     0.00     0.00  _root_index
-  0.00      0.00     0.00       10     0.00     0.00  destroy
-  0.00      0.00     0.00       10     0.00     0.00  uf_create_node
-  0.00      0.00     0.00        9     0.00     0.00  _tree_node_is_equal
-  0.00      0.00     0.00        9     0.00     0.00  uf_union
-  0.00      0.00     0.00        1     0.00     0.00  _d_print_node_
-  0.00      0.00     0.00        1     0.00     0.00  _d_uf_print_
-  0.00      0.00     0.00        1     0.00     0.00  print_cell
-  0.00      0.00     0.00        1     0.00     0.00  uf_destroy
-  0.00      0.00     0.00        1     0.00     0.00  uf_find_node
-  0.00      0.00     0.00        1     0.00     0.00  uf_find_root
-  0.00      0.00     0.00        1     0.00     0.00  uf_init
-  0.00      0.00     0.00        1     0.00     0.00  uf_is_connected
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 66.67      0.02     0.02                             compare_euclidean_nodes
+ 33.33      0.03     0.01   319600     0.00     0.00  euclidean_distance
+  0.00      0.03     0.00   319600     0.00     0.00  coordinates_euclidean_distance
+  0.00      0.03     0.00      800     0.00     0.00  coordinates_destroy
+  0.00      0.03     0.00      800     0.00     0.00  coordinates_init
+  0.00      0.03     0.00        2     0.00     0.00  pascal_arr_size
+  0.00      0.03     0.00        1     0.00    10.00  connected_list
 
  %         the percentage of the total running time of the
 time       program used by this function.
@@ -55,55 +47,40 @@ notice and this notice are preserved.
 		     Call graph (explanation follows)
 
 
-granularity: each sample hit covers 4 byte(s) no time propagated
+granularity: each sample hit covers 4 byte(s) for 33.33% of 0.03 seconds
 
 index % time    self  children    called     name
-                0.00    0.00      10/10          uf_destroy [5]
-[1]      0.0    0.00    0.00      10         destroy [1]
+                                                 <spontaneous>
+[1]     66.7    0.02    0.00                 compare_euclidean_nodes [1]
 -----------------------------------------------
-                0.00    0.00      10/10          main [22]
-[2]      0.0    0.00    0.00      10         uf_create_node [2]
+                0.00    0.01  319600/319600      connected_list [4]
+[2]     33.3    0.00    0.01  319600         coordinates_euclidean_distance [2]
+                0.01    0.00  319600/319600      euclidean_distance [3]
 -----------------------------------------------
-                0.00    0.00       9/9           main [22]
-[3]      0.0    0.00    0.00       9         uf_union [3]
-                0.00    0.00      18/21          _root_index [24]
-                0.00    0.00       9/9           _tree_node_is_equal [25]
+                0.01    0.00  319600/319600      coordinates_euclidean_distance [2]
+[3]     33.3    0.01    0.00  319600         euclidean_distance [3]
 -----------------------------------------------
-                0.00    0.00       1/1           _d_print_node_ [26]
-[4]      0.0    0.00    0.00       1         print_cell [4]
+                0.00    0.01       1/1           main [5]
+[4]     33.3    0.00    0.01       1         connected_list [4]
+                0.00    0.01  319600/319600      coordinates_euclidean_distance [2]
+                0.00    0.00       1/2           pascal_arr_size [8]
 -----------------------------------------------
-                0.00    0.00       1/1           main [22]
-[5]      0.0    0.00    0.00       1         uf_destroy [5]
-                0.00    0.00      10/10          destroy [1]
+                                                 <spontaneous>
+[5]     33.3    0.00    0.01                 main [5]
+                0.00    0.01       1/1           connected_list [4]
+                0.00    0.00     800/800         coordinates_init [7]
+                0.00    0.00     800/800         coordinates_destroy [6]
+                0.00    0.00       1/2           pascal_arr_size [8]
 -----------------------------------------------
-                0.00    0.00       1/1           main [22]
-[6]      0.0    0.00    0.00       1         uf_find_node [6]
+                0.00    0.00     800/800         main [5]
+[6]      0.0    0.00    0.00     800         coordinates_destroy [6]
 -----------------------------------------------
-                0.00    0.00       1/1           main [22]
-[7]      0.0    0.00    0.00       1         uf_find_root [7]
-                0.00    0.00       1/21          _root_index [24]
+                0.00    0.00     800/800         main [5]
+[7]      0.0    0.00    0.00     800         coordinates_init [7]
 -----------------------------------------------
-                0.00    0.00       1/1           main [22]
-[8]      0.0    0.00    0.00       1         uf_init [8]
------------------------------------------------
-                0.00    0.00       1/1           main [22]
-[9]      0.0    0.00    0.00       1         uf_is_connected [9]
-                0.00    0.00       2/21          _root_index [24]
------------------------------------------------
-                0.00    0.00       1/21          uf_find_root [7]
-                0.00    0.00       2/21          uf_is_connected [9]
-                0.00    0.00      18/21          uf_union [3]
-[24]     0.0    0.00    0.00      21         _root_index [24]
------------------------------------------------
-                0.00    0.00       9/9           uf_union [3]
-[25]     0.0    0.00    0.00       9         _tree_node_is_equal [25]
------------------------------------------------
-                0.00    0.00       1/1           main [22]
-[26]     0.0    0.00    0.00       1         _d_print_node_ [26]
-                0.00    0.00       1/1           print_cell [4]
------------------------------------------------
-                0.00    0.00       1/1           main [22]
-[27]     0.0    0.00    0.00       1         _d_uf_print_ [27]
+                0.00    0.00       1/2           connected_list [4]
+                0.00    0.00       1/2           main [5]
+[8]      0.0    0.00    0.00       2         pascal_arr_size [8]
 -----------------------------------------------
 
  This table describes the call tree of the program, and was sorted by
@@ -196,8 +173,6 @@ notice and this notice are preserved.
 
 Index by function name
 
-  [26] _d_print_node_          [4] print_cell              [8] uf_init
-  [27] _d_uf_print_            [2] uf_create_node          [9] uf_is_connected
-  [24] _root_index             [5] uf_destroy              [3] uf_union
-  [25] _tree_node_is_equal     [6] uf_find_node
-   [1] destroy                 [7] uf_find_root
+   [1] compare_euclidean_nodes [2] coordinates_euclidean_distance [8] pascal_arr_size
+   [4] connected_list          [7] coordinates_init
+   [6] coordinates_destroy     [3] euclidean_distance
