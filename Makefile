@@ -37,7 +37,14 @@ uf_test_profiler_generic:
 	@rm gmon.out
 
 full_graph_test_profile:
-	@gcc -o main Source/libs/src/*.c Tests/Dumb_BuildGraphConnections/*.c -g -D _DEV_ -lm -pg
+	@gcc -o main Source/libs/src/*.c Tests/Dumb_BuildGraphConnections/build_graph_connections.c -g -D _DEV_ -lm -pg
+	@echo 'Compilado!'
+	@./main
+	@gprof main gmon.out > Profiler/gprof.txt
+	@rm gmon.out
+
+tree_graph_test_profile:
+	@gcc -o main Source/libs/src/*.c Tests/Dumb_BuildGraphConnections/build_graph_tree.c -g -D _DEV_ -lm -pg
 	@echo 'Compilado!'
 	@./main
 	@gprof main gmon.out > Profiler/gprof.txt
