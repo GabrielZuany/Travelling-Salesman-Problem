@@ -24,8 +24,8 @@ void print_vertex(vertex* c){
 
 int main(){
     int size = 5;  
-    union_find* uf = tsp_build_tree(size);
-    
+    union_find* uf = tsp_build_tree(size); // fix this
+
     _d_uf_print_(uf);    
     for(int i=0; i<size; i++){
         tree_node* tn = uf_find_node(uf, i);
