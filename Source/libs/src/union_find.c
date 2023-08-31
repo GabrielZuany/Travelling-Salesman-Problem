@@ -52,6 +52,10 @@ int _root_index(union_find* uf, int i){
     return i;
 }
 
+int tree_node_get_priority(tree_node* node){
+    return node->_priority;
+}
+
 void* uf_find_root(union_find* uf, tree_node* node){
     return uf->tree_nodes[_root_index(uf, node->_priority)].data;
 }

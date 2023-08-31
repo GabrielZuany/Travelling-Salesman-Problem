@@ -48,6 +48,7 @@ void* uf_find_root(union_find* uf, tree_node* node);
  *  @note Complexity: O(1)
  */
 tree_node* uf_find_node(union_find* uf, int priority);
+int tree_node_get_priority(tree_node* node);
 
 /**
  * @brief Join 2 nodes using weighted quick sort
