@@ -27,7 +27,7 @@ int pascal_size(int n_memb);
 
 
 
-union_find* tsp_build_tree(int n_memb);
+union_find* tsp_build_tree(int n_memb, vertex** nodes, compare_fn vertex_compare_fn, destroy_fn vertex_destroy_fn);
 
 
 #endif 
