@@ -3,8 +3,8 @@
 
 typedef struct tree_node tree_node;
 typedef struct union_find union_find;
-typedef int (*uf_compare_fn)(void*, void*);
-typedef void (*uf_destroy_fn)(void*, ...);
+typedef int (*compare_fn)(void*, void*);
+typedef void (*destroy_fn)(void*, ...);
 
 /**
  * @brief Initialize a union find data structure
@@ -16,7 +16,7 @@ typedef void (*uf_destroy_fn)(void*, ...);
  * 
  * @note Complexity: O(n)
  */
-union_find* uf_init(int size, uf_compare_fn compare_fn, uf_destroy_fn destroy_fn);
+union_find* uf_init(int size, compare_fn compare_fn, destroy_fn destroy_fn);
 
 /**
  * @brief Dealloc memory allocated for union find data structure.
@@ -48,6 +48,15 @@ void* uf_find_root(union_find* uf, tree_node* node);
  *  @note Complexity: O(1)
  */
 tree_node* uf_find_node(union_find* uf, int priority);
+
+/**
+ * @brief Retrieves the priority value of a node.
+ * 
+ * @param node 
+ * @return int 
+ * 
+ * @note Complexity: O(1)
+ */
 int tree_node_get_priority(tree_node* node);
 
 /**

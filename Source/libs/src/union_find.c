@@ -13,11 +13,11 @@ struct union_find{
     tree_node* tree_nodes;
     int* size_trees_arr;
     int size;
-    uf_compare_fn compare;
-    uf_destroy_fn destroy;
+    compare_fn compare;
+    destroy_fn destroy;
 };
 
-union_find* uf_init(int size, uf_compare_fn cmp, uf_destroy_fn destroy){
+union_find* uf_init(int size, compare_fn cmp, destroy_fn destroy){
     union_find* uf = malloc(sizeof(union_find));
     uf->compare = cmp;
     uf->destroy = destroy;
