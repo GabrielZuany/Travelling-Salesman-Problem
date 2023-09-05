@@ -16,23 +16,25 @@
 #include "../../Source/libs/headers/vertex.h"
 #include "../../Source/libs/headers/utils.h"
 #include "../../Source/libs/headers/edge.h"
-#include "../../Source/libs/headers/algorithms.h"
+#include "../../Source/libs/headers/connection.h"
+#include "../../Source/libs/headers/tsp.h"
 
 void print_vertex(vertex* c){
     printf("(%.2f, %.2f)", vertex_get_x(c), vertex_get_y(c));
 }
 
 int main(){
-    int size = 1000;  
-
+    // from file (function read_tsp(args))
+    int size = 100;
     vertex** points = malloc(sizeof(vertex*) * size);
     for(int i=0; i<size; i++){
         points[i] = vertex_init(rand() % 10, rand() % 10);
     }
 
-    union_find* uf = tsp_build_tree(size, points, vertex_compare, vertex_destroy); // fix this
+    //vertex** points = read_tsp(char* filepath);
+    union_find* uf = tsp_build_tree(size, points, vertex_compare, vertex_destroy);
 
-    _d_uf_print_(uf);    
+    _d_uf_print_(uf);
     for(int i=0; i<size; i++){
         tree_node* tn = uf_find_node(uf, i);
         _d_print_node_(tn, print_vertex);

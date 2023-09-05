@@ -1,3 +1,7 @@
 .VirtualEnvironment
 main
 Profiler/gprof.txt
+*.tsp
+*.Identifier
+*.mst
+*.tour

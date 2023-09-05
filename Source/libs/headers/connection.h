@@ -24,18 +24,4 @@ edge** pascal_connections(vertex** nodes, int n_memb);
  */
 int pascal_size(int n_memb);
 
-/**
- * @brief Connect all nodes in a graph using a minimum spanning tree algorithm. The algorithm used is Kruskal's algorithm. The algorithm is based on the union_find data structure.
- * 
- * @param n_memb size of the graph
- * @param points graph nodes (coordinates)
- * @param vertex_compare function to compare two vertex objects
- * @param vertex_destroy function to destroy a vertex object
- * @return union_find*
- * 
- * @note Complexity: 
- */
-union_find* tsp_build_tree(int n_memb, vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy);
-
-
 #endif 
