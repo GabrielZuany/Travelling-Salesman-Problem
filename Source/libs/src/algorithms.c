@@ -51,13 +51,18 @@ edge** pascal_connections(vertex** nodes, int n_memb){
 union_find* tsp_build_tree(int n_memb, vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy){
     union_find* uf = uf_init(n_memb, vertex_compare, vertex_destroy);
     int priority = 0;
+
+    // build the graph (no connections yet)
     for(int i = 0; i<n_memb; i++){
         uf_create_node(uf, points[i], priority);
         vertex_set_priority(points[i], priority);
         priority++;
     }
 
+    // connect each node to another and sort them by distance
     edge** edge_arr = pascal_connections(points, n_memb);
+
+    // connect the nodes based on lowest distance (kruskal's algorithm)
     for(int i = 0; i < pascal_size(n_memb); i++){
         edge* edge1 = edge_arr[i];
         vertex* n1 = points[edge_get_node1_idx(edge1)];
@@ -67,6 +72,7 @@ union_find* tsp_build_tree(int n_memb, vertex** points, compare_fn vertex_compar
         uf_union(uf, t1, t2);
     }
     
+    // free the edges
     for(int i = 0; i < pascal_size(n_memb); i++){
         edge_destroy(edge_arr[i]);
     }
