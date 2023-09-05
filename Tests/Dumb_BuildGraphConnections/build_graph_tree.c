@@ -23,7 +23,7 @@ void print_vertex(vertex* c){
 }
 
 int main(){
-    int size = 5;  
+    int size = 1000;  
 
     vertex** points = malloc(sizeof(vertex*) * size);
     for(int i=0; i<size; i++){
@@ -39,5 +39,7 @@ int main(){
         printf("\n");
     }
 
+    uf_destroy(uf);
+    free(points);
     return 0;
 }

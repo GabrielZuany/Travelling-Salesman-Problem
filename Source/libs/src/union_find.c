@@ -36,7 +36,7 @@ void uf_destroy(union_find* uf){
     for(int i = 0; i < uf->size; i++){
         if(uf->tree_nodes[i].data != NULL){
             uf->destroy(uf->tree_nodes[i].data);
-        }
+        }  
     }
     free(uf->tree_nodes);
     free(uf->size_trees_arr);

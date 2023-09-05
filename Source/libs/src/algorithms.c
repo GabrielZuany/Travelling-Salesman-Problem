@@ -47,10 +47,10 @@ edge** pascal_connections(vertex** nodes, int n_memb){
 
 
 // ========================== | BUILD THE TREE | ==========================
+
 union_find* tsp_build_tree(int n_memb, vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy){
-    
-    int priority = 0;
     union_find* uf = uf_init(n_memb, vertex_compare, vertex_destroy);
+    int priority = 0;
     for(int i = 0; i<n_memb; i++){
         uf_create_node(uf, points[i], priority);
         vertex_set_priority(points[i], priority);
@@ -66,6 +66,12 @@ union_find* tsp_build_tree(int n_memb, vertex** points, compare_fn vertex_compar
         tree_node* t2 = uf_find_node(uf, vertex_get_priority(n2));
         uf_union(uf, t1, t2);
     }
+    
+    for(int i = 0; i < pascal_size(n_memb); i++){
+        edge_destroy(edge_arr[i]);
+    }
+    free(edge_arr);
+    
     return uf;
 }
 
