@@ -14,7 +14,7 @@ typedef struct edge edge;
  * 
  * @note Complexity: O(1)
  */
-edge* edge_init(vertex* node1, vertex* node2, float distance);
+edge* edge_init(int node1, int node2, float distance);
 
 /**
  * @brief Get the node2 object
@@ -24,7 +24,7 @@ edge* edge_init(vertex* node1, vertex* node2, float distance);
  * 
  * @note Complexity: O(1)
  */
-vertex* edge_get_node1(edge* e);
+int edge_get_node1_idx(edge* e);
 
 /**
  * @brief Get the node2 object
@@ -34,7 +34,7 @@ vertex* edge_get_node1(edge* e);
  * 
  * @note Complexity: O(1)
  */
-vertex* edge_get_node2(edge* e);
+int edge_get_node2_idx(edge* e);
 
 /**
  * @brief Get the distance object
@@ -55,15 +55,6 @@ float edge_get_distance(edge* e);
  * @note Complexity: O(1)
  */
 void edge_set_distance(edge* e, float distance);
-
-/**
- * @brief Calculate the distance between two nodes.
- * 
- * @param e 
- * 
- * @note Complexity: O(1)
- */
-float edge_calc_distance(edge* e);
 
 /**
  * @brief Sort an array of edges.

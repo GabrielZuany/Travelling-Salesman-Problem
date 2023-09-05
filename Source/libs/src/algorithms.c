@@ -36,7 +36,7 @@ edge** pascal_connections(vertex** nodes, int n_memb){
     for(int i = 0; i < n_memb; i++){
         for(int j = i + 1; j < n_memb; j++){
             dist = vertex_euclidean_distance(*(nodes + i), *(nodes + j));
-            edges[position++] = edge_init(*(nodes + i), *(nodes + j), dist);
+            edges[position++] = edge_init(i, j, dist);
         }
     }
     edge_sort(edges, pascal_size(n_memb), _edge_cmp_);
@@ -47,12 +47,12 @@ edge** pascal_connections(vertex** nodes, int n_memb){
 
 
 // ========================== | BUILD THE TREE | ==========================
-union_find* tsp_build_tree(int n_memb, vertex** nodes, compare_fn vertex_compare_fn, destroy_fn vertex_destroy_fn){
+union_find* tsp_build_tree(int n_memb){
     int priority = 0;
-    union_find* uf = uf_init(n_memb, vertex_compare_fn, vertex_destroy_fn);
+    union_find* uf = uf_init(n_memb, vertex_compare, vertex_destroy);
 
     // remove from here. this is just for testing. this data should be passed as parameter.
-    vertex** points = nodes;
+    vertex** points = NULL;
     points = malloc(sizeof(vertex*) * n_memb);
     for(int i=0; i<n_memb; i++){
         points[i] = vertex_init(rand() % 10, rand() % 10);
@@ -64,11 +64,11 @@ union_find* tsp_build_tree(int n_memb, vertex** nodes, compare_fn vertex_compare
 
     edge** edge_arr = pascal_connections(points, n_memb);
     for(int i = 0; i < pascal_size(n_memb); i++){
-        edge* node = edge_arr[i];
-        vertex* node1 = edge_get_node1(node);
-        vertex* node2 = edge_get_node2(node);
-        tree_node* t1 = uf_find_node(uf, vertex_get_priority(node1));
-        tree_node* t2 = uf_find_node(uf, vertex_get_priority(node2));
+        edge* edge1 = edge_arr[i];
+        vertex* n1 = points[edge_get_node1_idx(edge1)];
+        vertex* n2 = points[edge_get_node2_idx(edge1)];
+        tree_node* t1 = uf_find_node(uf, vertex_get_priority(n1));
+        tree_node* t2 = uf_find_node(uf, vertex_get_priority(n2));
         uf_union(uf, t1, t2);
     }
     return uf;

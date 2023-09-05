@@ -5,15 +5,15 @@
 #include "../headers/utils.h"
 
 struct edge{
-    vertex* node1;
-    vertex* node2;
+    int idx_node_1;
+    int idx_node_2;
     float distance;
 };
 
-edge* edge_init(vertex* node1, vertex* node2, float distance){
+edge* edge_init(int node1, int node2, float distance){
     edge* e = malloc(sizeof(edge));
-    e->node1 = node1;
-    e->node2 = node2;
+    e->idx_node_1 = node1;
+    e->idx_node_2 = node2;
     e->distance = distance;
     return e;
 }
@@ -22,17 +22,12 @@ void edge_set_distance(edge* e, float distance){
     e->distance = distance;
 }
 
-float edge_calc_distance(edge* e){
-    e->distance = vertex_euclidean_distance(e->node1, e->node2);
-    return e->distance;
+int edge_get_node1_idx(edge* e){
+    return e->idx_node_1;
 }
 
-vertex* edge_get_node1(edge* e){
-    return e->node1;
-}
-
-vertex* edge_get_node2(edge* e){
-    return e->node2;
+int edge_get_node2_idx(edge* e){
+    return e->idx_node_2;
 }
 
 float edge_get_distance(edge* e){
