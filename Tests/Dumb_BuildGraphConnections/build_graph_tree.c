@@ -16,7 +16,6 @@
 #include "../../Source/libs/headers/vertex.h"
 #include "../../Source/libs/headers/utils.h"
 #include "../../Source/libs/headers/edge.h"
-#include "../../Source/libs/headers/connection.h"
 #include "../../Source/libs/headers/tsp.h"
 
 void print_vertex(vertex* c){
