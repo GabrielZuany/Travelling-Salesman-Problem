@@ -24,7 +24,13 @@ void print_vertex(vertex* c){
 
 int main(){
     int size = 5;  
-    union_find* uf = tsp_build_tree(size); // fix this
+
+    vertex** points = malloc(sizeof(vertex*) * size);
+    for(int i=0; i<size; i++){
+        points[i] = vertex_init(rand() % 10, rand() % 10);
+    }
+
+    union_find* uf = tsp_build_tree(size, points, vertex_compare, vertex_destroy); // fix this
 
     _d_uf_print_(uf);    
     for(int i=0; i<size; i++){

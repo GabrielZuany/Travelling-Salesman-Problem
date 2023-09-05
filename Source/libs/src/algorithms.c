@@ -47,20 +47,15 @@ edge** pascal_connections(vertex** nodes, int n_memb){
 
 
 // ========================== | BUILD THE TREE | ==========================
-union_find* tsp_build_tree(int n_memb){
+union_find* tsp_build_tree(int n_memb, vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy){
+    
     int priority = 0;
     union_find* uf = uf_init(n_memb, vertex_compare, vertex_destroy);
-
-    // remove from here. this is just for testing. this data should be passed as parameter.
-    vertex** points = NULL;
-    points = malloc(sizeof(vertex*) * n_memb);
-    for(int i=0; i<n_memb; i++){
-        points[i] = vertex_init(rand() % 10, rand() % 10);
+    for(int i = 0; i<n_memb; i++){
         uf_create_node(uf, points[i], priority);
         vertex_set_priority(points[i], priority);
         priority++;
     }
-    // end
 
     edge** edge_arr = pascal_connections(points, n_memb);
     for(int i = 0; i < pascal_size(n_memb); i++){

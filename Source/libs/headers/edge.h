@@ -17,7 +17,7 @@ typedef struct edge edge;
 edge* edge_init(int node1, int node2, float distance);
 
 /**
- * @brief Get the node2 object
+ * @brief Get the node2 index
  * 
  * @param e 
  * @return vertex* 
@@ -27,7 +27,7 @@ edge* edge_init(int node1, int node2, float distance);
 int edge_get_node1_idx(edge* e);
 
 /**
- * @brief Get the node2 object
+ * @brief Get the node2 index
  * 
  * @param e 
  * @return vertex* 

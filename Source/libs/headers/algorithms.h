@@ -25,9 +25,7 @@ edge** pascal_connections(vertex** nodes, int n_memb);
 int pascal_size(int n_memb);
 
 
-
-
-union_find* tsp_build_tree(int n_memb);
+union_find* tsp_build_tree(int n_memb, vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy);
 
 
 #endif 
