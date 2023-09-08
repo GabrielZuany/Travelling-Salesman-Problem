@@ -7,75 +7,126 @@
 #include "../headers/union_find.h"
 #include "../headers/utils.h"
 
+// ============= GET and SET functions =============
+
 int _dimension_(int dimension, char* mode){
     static int _this_dimension_;
-    if(strcmp(mode, "get")){
+    if(strcmp(mode, "get") == 0){
         return _this_dimension_;
-    }else if(strcmp(mode, "set")){
+    }else if(strcmp(mode, "set") == 0){
         _this_dimension_ = dimension;
     }
 }
 
-vertex** read_tsp(char* filepath){
-    //vertex** points = NULL;
-    FILE* file = fopen(filepath, "r");
+int tsp_get_dimension(){
+    return _dimension_(nan, "get");
+}
 
-    int dimension = 100; // from file
+void tsp_set_dimension(int dimension){
     _dimension_(dimension, "set");
-    float x = 0, y = 0; // from file
-    char name[] = ""; // from file
+}
 
-    //_write_mst_(MST_OUTPUT_FOLDER, name, dimension, NULL);
-    //_write_tour_(TOUR_OUTPUT_FOLDER, name, dimension, NULL);
+char* _name_(char* name, char* mode){
+    static char* _this_name_;
+    if(strcmp(mode, "get") == 0){
+        return _this_name_;
+    }else if(strcmp(mode, "set") == 0){
+        _this_name_ = name;
+    }
+}
+
+char* tsp_get_name(){
+    return _name_(NULL, "get");
+}
+
+void tsp_set_name(char* name){
+    _name_(name, "set");
+}
+
+char* _filepath_(char* filepath, char* mode){
+    static char* _this_filepath_;
+    if(strcmp(mode, "get") == 0){
+        return _this_filepath_;
+    }else if(strcmp(mode, "set") == 0){
+        _this_filepath_ = filepath;
+    }
+}
+
+char* tsp_get_filepath(){
+    return _filepath_(NULL, "get");
+}
+
+void tsp_set_filepath(char* filepath){
+    _filepath_(filepath, "set");
+}
+
+
+// ============= READ and WRITE functions =============
+
+vertex** tsp_read(char* filepath){
+    int dimension = 0;
+    float x = 0, y = 0;
+    char* name = malloc(sizeof(char)*100);
+    char line[100];
+
+    FILE* file = fopen(filepath, "r");
+    while(fgets(line, 100, file) != NULL){
+        if(strstr(line, "NAME")){
+            sscanf(line, "NAME : %s", name);
+            tsp_set_name(name);
+        }else if(strstr(line, "DIMENSION")){
+            sscanf(line, "DIMENSION : %d", &dimension);
+            tsp_set_dimension(dimension);
+        }else if(strstr(line, "NODE_COORD_SECTION")){
+            break;
+        }
+    }
+
+    strcat(name, ".mst");
+    _create_mst_file_(MST_OUTPUT_FOLDER, name, dimension);
 
     vertex** points = malloc(sizeof(vertex*) * dimension);
+    int index_garbage = 0;
     for(int i=0; i< dimension; i++){
-        points[i] = vertex_init(rand() % 10, rand() % 10);
+        fscanf(file, "%d %f %f", &index_garbage, &x, &y);
+        points[i] = vertex_init(x, y);
     }
 
     fclose(file);
     return points;
 }
 
-void _write_mst_(char* filepath, char* name, int dimension, vertex** points){
-    // if open for the first time
-    if(points == NULL){
-        char type[] = "MST";
-        FILE* file = fopen(filepath, "w");
-        // write: name, dimension, MST
-        fclose(file);
-        return;
-    }
+void _create_mst_file_(char* folderpath, char* name, int dimension){
+    char* filepath = malloc(sizeof(char) * 1000);
+    strcpy(filepath, folderpath);
+    strcat(filepath, name);
 
-    FILE* file = fopen(filepath, "a");
-
-
-    //write EOF at end of file
+    char* type = "MST";
+    FILE* file = fopen(filepath, "w");
+    fprintf(file, "NAME: %s\nTYPE: %s\nDIMENSION: %d\nMST_SECTION\n", name, type, dimension);    
     fclose(file);
+    free(filepath);
 }
 
-void _write_tour_(char* filepath, char* name, int dimension, vertex** points, int* tour){
-    // tour => array of points indexes (avoid create a vertex** copy)
+void _write_in_mst_file_(char* name, int dimension, int idx1, int idx2){
+    char* filepath = malloc(sizeof(char) * 1000);
+    strcpy(filepath, MST_OUTPUT_FOLDER);
+    strcat(filepath, name);
 
-    // if open for the first time
-    if(points == NULL){
-        char type[] = "TOUR";
-        FILE* file = fopen(filepath, "w");
-        // write: name, dimension, MST
-        fclose(file);
-        return;
-    }
-    
     FILE* file = fopen(filepath, "a");
 
-
-    //write EOF at end of file
+    if(idx1 == -1 && idx2 == -1){
+        fprintf(file, "EOF");
+    }else{
+        fprintf(file, "%d %d\n", idx1, idx2);
+    }
     fclose(file);
+    free(filepath);
 }
 
 
 
-
+// ============= BUILD CONNECTIONS =============
 
 int pascal_size(int n_memb){
     int sz = n_memb-1;
@@ -112,9 +163,10 @@ edge** pascal_connections(vertex** nodes, int n_memb){
 
 
 
+// ============= BUILD TREE =============
 
-union_find* tsp_build_tree(int n_memb, vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy){
-    //n_memb = _dimension_(nan, "get");
+union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy){
+    int n_memb = tsp_get_dimension();
     union_find* uf = uf_init(n_memb, vertex_compare, vertex_destroy);
     int priority = 0;
 
@@ -135,17 +187,18 @@ union_find* tsp_build_tree(int n_memb, vertex** points, compare_fn vertex_compar
         vertex* n2 = points[edge_get_node2_idx(edge1)];
         tree_node* t1 = uf_find_node(uf, vertex_get_priority(n1));
         tree_node* t2 = uf_find_node(uf, vertex_get_priority(n2));
-        uf_union(uf, t1, t2);
-        // i can append in mst file in case of union sucess []
-        // avoid on loop of size N                          []
-        // change uf_union return                           []
+        if(uf_union(uf, t1, t2)){
+            _write_in_mst_file_(tsp_get_name(), n_memb, edge_get_node1_idx(edge1) + 1, edge_get_node2_idx(edge1) + 1);
+        }
     }
-    
-    // free the edges
+    _write_in_mst_file_(tsp_get_name(), n_memb, -1, -1);
+    free(tsp_get_name());
+
     for(int i = 0; i < pascal_size(n_memb); i++){
         edge_destroy(edge_arr[i]);
     }
     free(edge_arr);
+    
     
     return uf;
 }

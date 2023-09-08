@@ -68,7 +68,7 @@ int tree_node_get_priority(tree_node* node);
  * 
  * @note Complexity: O(log(n))
  */
-void uf_union(union_find* uf, tree_node* node1, tree_node* node2);
+int uf_union(union_find* uf, tree_node* node1, tree_node* node2);
 
 /**
  * @brief 

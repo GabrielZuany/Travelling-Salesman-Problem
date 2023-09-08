@@ -49,3 +49,7 @@ tree_graph_test_profile:
 	@./main
 	@gprof main gmon.out > Profiler/gprof.txt
 	@rm gmon.out
+
+read_test:
+	@gcc -o main Source/libs/src/*.c Tests/Read/*.c -g -D _DEV_ -lm
+	@echo 'Compilado!'

@@ -7,39 +7,43 @@
 #include "../headers/utils.h"
 
 #define nan -1
-#define MST_OUTPUT_FOLDER "not defined"
+#define TSP_INPUT_FOLDER "/home/zuany/LinuxWorkEnvironmnet/Travelling-Salesman-Problem/Others/exemplos/exemplos/in/"
+#define MST_OUTPUT_FOLDER "Outputs/mst/"
 #define TOUR_OUTPUT_FOLDER "not defined"
 
 // ================== READ AND WRITE =====================//
 
 /**
- * @brief 
+ * @brief Return the dimension of a tsp file (number of nodes)
+ * 
+ * @param filepath 
+ * @return int 
+ * 
+ * @note Complexity: O(1)
+ */
+int tsp_get_dimension();
+
+/**
+ * @brief Read a tsp file and return a list of vertexes
  * 
  * @param filepath 
  * @return vertex** 
+ * 
+ * @note Complexity: 
  */
-vertex** read_tsp(char* filepath);
+vertex** tsp_read(char* filepath);
 
 /**
- * @brief 
+ * @brief Creates a file with the minimum spanning tree of a graph header (bind function)
  * 
  * @param filepath 
  * @param name 
  * @param dimension 
  * @param points 
- */
-void _write_mst_(char* filepath, char* name, int dimension, vertex** points);
-
-/**
- * @brief 
  * 
- * @param filepath 
- * @param name 
- * @param dimension 
- * @param points 
- * @param tour 
+ * @note Complexity: 
  */
-void _write_tour_(char* filepath, char* name, int dimension, vertex** points, int* tour);
+void _create_mst_file_(char* filepath, char* name, int dimension);
 
 
 // ============================= CONNECT NODES ================================= //
@@ -70,7 +74,6 @@ int pascal_size(int n_memb);
 /**
  * @brief Connect all nodes in a graph using a minimum spanning tree algorithm. The algorithm used is Kruskal's algorithm. The algorithm is based on the union_find data structure.
  * 
- * @param n_memb size of the graph
  * @param points graph nodes (coordinates)
  * @param vertex_compare function to compare two vertex objects
  * @param vertex_destroy function to destroy a vertex object
@@ -78,6 +81,6 @@ int pascal_size(int n_memb);
  * 
  * @note Complexity: 
  */
-union_find* tsp_build_tree(int n_memb, vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy);
+union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy);
 
 #endif
