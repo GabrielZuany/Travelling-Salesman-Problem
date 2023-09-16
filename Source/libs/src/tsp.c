@@ -195,14 +195,16 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
     int edges = 0;
     printf("Building MST...\n");
     for(int i = 0; i < pascal_size(n_memb); i++){
-        edge* edge1 = edge_arr[i];
-        vertex* n1 = points[edge_get_node1_idx(edge1)];
-        vertex* n2 = points[edge_get_node2_idx(edge1)];
-        tree_node* t1 = uf_find_node(uf, vertex_get_priority(n1));
-        tree_node* t2 = uf_find_node(uf, vertex_get_priority(n2));
-        if(edges < max_edges && uf_union(uf, t1, t2)){
-            _write_in_mst_file_(tsp_get_name(), n_memb, edge_get_node1_idx(edge1) + 1, edge_get_node2_idx(edge1) + 1);
-            edges++;
+        if(edges < max_edges){
+            edge* edge1 = edge_arr[i];
+            vertex* n1 = points[edge_get_node1_idx(edge1)];
+            vertex* n2 = points[edge_get_node2_idx(edge1)];
+            tree_node* t1 = uf_find_node(uf, vertex_get_priority(n1));
+            tree_node* t2 = uf_find_node(uf, vertex_get_priority(n2));
+            if(uf_union(uf, t1, t2)){
+                _write_in_mst_file_(tsp_get_name(), n_memb, edge_get_node1_idx(edge1) + 1, edge_get_node2_idx(edge1) + 1);
+                edges++;
+            }
         }
         edge_destroy(edge_arr[i]);
     }
