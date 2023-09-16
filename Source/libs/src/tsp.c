@@ -150,20 +150,30 @@ int _edge_cmp_(const void* a, const void* b){
 edge** pascal_connections(vertex** nodes, int n_memb){
     float dist = 0;
     int position = 0;
-    edge** edges = malloc(sizeof(edge*) * pascal_size(n_memb));
+    int size = pascal_size(n_memb);
+    edge** edges = malloc(sizeof(edge*) * size);
     for(int i = 0; i < n_memb; i++){
         for(int j = i + 1; j < n_memb; j++){
             dist = vertex_euclidean_distance(*(nodes + i), *(nodes + j));
             edges[position++] = edge_init(i, j, dist);
         }
     }
-    edge_sort(edges, pascal_size(n_memb), _edge_cmp_);
+    edge_sort(edges, size, _edge_cmp_);
     return edges;
 }
 
 
-
 // ============= BUILD TREE =============
+// Kruskal's algorithm
+    // A = vazio
+// for cada vertice v pertencente a G.V
+    //      MAKE-SET(v)
+    // ordene as arestas de G.E em ordem nao decrescente de peso W
+    // for cada aresta(u, v) pertencente a G.E, em ordem de peso
+    //  if FIND-SET(u) != FIND-SET(v)
+    //      A = A U {(u, v)}
+    //      UNION(u, v)
+    // return A
 
 union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy){
     int n_memb = tsp_get_dimension();
@@ -181,24 +191,24 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
     edge** edge_arr = pascal_connections(points, n_memb);
 
     // connect the nodes based on lowest distance (kruskal's algorithm)
+    int max_edges = n_memb - 1;
+    int edges = 0;
+    printf("Building MST...\n");
     for(int i = 0; i < pascal_size(n_memb); i++){
         edge* edge1 = edge_arr[i];
         vertex* n1 = points[edge_get_node1_idx(edge1)];
         vertex* n2 = points[edge_get_node2_idx(edge1)];
         tree_node* t1 = uf_find_node(uf, vertex_get_priority(n1));
         tree_node* t2 = uf_find_node(uf, vertex_get_priority(n2));
-        if(uf_union(uf, t1, t2)){
+        if(edges < max_edges && uf_union(uf, t1, t2)){
             _write_in_mst_file_(tsp_get_name(), n_memb, edge_get_node1_idx(edge1) + 1, edge_get_node2_idx(edge1) + 1);
+            edges++;
         }
-    }
-    _write_in_mst_file_(tsp_get_name(), n_memb, -1, -1);
-    free(tsp_get_name());
-
-    for(int i = 0; i < pascal_size(n_memb); i++){
         edge_destroy(edge_arr[i]);
     }
     free(edge_arr);
-    
-    
+
+    _write_in_mst_file_(tsp_get_name(), n_memb, -1, -1);
+    free(tsp_get_name());
     return uf;
 }
