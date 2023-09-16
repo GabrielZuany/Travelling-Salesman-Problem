@@ -164,7 +164,7 @@ edge** pascal_connections(vertex** nodes, int n_memb){
 
 
 // ============= BUILD TREE =============
-// Kruskal's algorithm
+/* Kruskal's algorithm
     // A = vazio
 // for cada vertice v pertencente a G.V
     //      MAKE-SET(v)
@@ -174,6 +174,7 @@ edge** pascal_connections(vertex** nodes, int n_memb){
     //      A = A U {(u, v)}
     //      UNION(u, v)
     // return A
+    */
 
 union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy){
     int n_memb = tsp_get_dimension();

@@ -64,6 +64,14 @@ float vertex_get_y(vertex* c);
 void vertex_destroy(vertex* c);
 
 /**
+ * @brief 
+ * 
+ * @param c 
+ * @param ... 
+ */
+void vertex_destroy_wrapper(void* c, ...);
+
+/**
  * @brief Compare two vertex
  * 
  * @param c1 

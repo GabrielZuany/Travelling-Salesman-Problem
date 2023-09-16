@@ -32,8 +32,12 @@ float vertex_get_y(vertex* c){
     return c->y;
 }
 
+void vertex_destroy_wrapper(void* c, ...){
+    vertex_destroy((vertex*) c);
+}
+
 void vertex_destroy(vertex* c){
-    free(c);
+    free((vertex*) c);
 }
 
 int vertex_compare(void* c1, void* c2){

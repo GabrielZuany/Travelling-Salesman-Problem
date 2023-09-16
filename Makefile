@@ -1,4 +1,5 @@
 # makefile bem cachorro só pra testar mesmo
+#  time ./main Others/exemplos/exemplos/in/berlin52.tsp 
 all:
 	@gcc -o main Source/libs/src/*.c Source/*.c -Wall -lm
 	@echo 'Compilado!'
