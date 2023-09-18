@@ -2,6 +2,9 @@
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
         "typeinfo": "c",
-        "random": "c"
+        "random": "c",
+        "*.tcc": "c",
+        "string": "c",
+        "string_view": "c"
     }
 }
