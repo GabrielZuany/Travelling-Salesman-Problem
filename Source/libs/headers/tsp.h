@@ -9,7 +9,7 @@
 #define nan -1
 #define TSP_INPUT_FOLDER "/home/zuany/LinuxWorkEnvironmnet/Travelling-Salesman-Problem/Others/exemplos/exemplos/in/"
 #define MST_OUTPUT_FOLDER "Outputs/mst/"
-#define TOUR_OUTPUT_FOLDER "not defined"
+#define TOUR_OUTPUT_FOLDER "Outputs/tour/"
 
 // ================== READ AND WRITE =====================//
 

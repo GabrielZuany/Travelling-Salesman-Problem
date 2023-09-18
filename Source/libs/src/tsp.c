@@ -16,6 +16,7 @@ int _dimension_(int dimension, char* mode){
     }else if(strcmp(mode, "set") == 0){
         _this_dimension_ = dimension;
     }
+    return 0;
 }
 
 int tsp_get_dimension(){
@@ -33,6 +34,7 @@ char* _name_(char* name, char* mode){
     }else if(strcmp(mode, "set") == 0){
         _this_name_ = name;
     }
+    return NULL;
 }
 
 char* tsp_get_name(){
@@ -50,6 +52,7 @@ char* _filepath_(char* filepath, char* mode){
     }else if(strcmp(mode, "set") == 0){
         _this_filepath_ = filepath;
     }
+    return NULL;
 }
 
 char* tsp_get_filepath(){
@@ -58,6 +61,49 @@ char* tsp_get_filepath(){
 
 void tsp_set_filepath(char* filepath){
     _filepath_(filepath, "set");
+}
+
+
+// ==================== TOUR ===================
+
+typedef int tour;
+
+int _exists_in_tour_(int* tour, int id){
+    for(int i = 0; i < tsp_get_dimension(); i++){
+        if(tour[i] == id){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+FILE* _open_tour_(){
+    char* name = tsp_get_name();
+    char* folderpath = TOUR_OUTPUT_FOLDER;
+    char* filepath = malloc(sizeof(char) * 1000);
+    strcpy(filepath, folderpath);
+    strcat(filepath, name);
+    strcat(filepath, ".tour");
+
+    FILE* file = fopen(filepath, "w");
+    free(filepath);
+    return file;
+}
+
+void _close_tour_(FILE* tour_file){
+    fprintf(tour_file, "EOF");
+    fclose(tour_file);
+}
+
+void _write_tour_header(FILE* tour_file){
+    char* name = tsp_get_name();
+    char* type = "TOUR";
+    int dimension = tsp_get_dimension();
+    fprintf(tour_file, "NAME: %s\nTYPE: %s\nDIMENSION: %d\nTOUR_SECTION\n", name, type, dimension);    
+}
+
+void _tour_write_vertex_idx_(FILE* tour_file, int vertex_idx){
+    fprintf(tour_file, "%d\n", vertex_idx);
 }
 
 
@@ -81,8 +127,7 @@ vertex** tsp_read(char* filepath){
             break;
         }
     }
-
-    strcat(name, ".mst");
+    
     _create_mst_file_(MST_OUTPUT_FOLDER, name, dimension);
 
     vertex** points = malloc(sizeof(vertex*) * dimension);
@@ -100,6 +145,7 @@ void _create_mst_file_(char* folderpath, char* name, int dimension){
     char* filepath = malloc(sizeof(char) * 1000);
     strcpy(filepath, folderpath);
     strcat(filepath, name);
+    strcat(filepath, ".mst");
 
     char* type = "MST";
     FILE* file = fopen(filepath, "w");
@@ -108,10 +154,11 @@ void _create_mst_file_(char* folderpath, char* name, int dimension){
     free(filepath);
 }
 
-void _write_in_mst_file_(char* name, int dimension, int idx1, int idx2){
+void _write_in_mst_file_(char* name, int idx1, int idx2){
     char* filepath = malloc(sizeof(char) * 1000);
     strcpy(filepath, MST_OUTPUT_FOLDER);
     strcat(filepath, name);
+    strcat(filepath, ".mst");
 
     FILE* file = fopen(filepath, "a");
 
@@ -123,8 +170,6 @@ void _write_in_mst_file_(char* name, int dimension, int idx1, int idx2){
     fclose(file);
     free(filepath);
 }
-
-
 
 // ============= BUILD CONNECTIONS =============
 
@@ -163,18 +208,7 @@ edge** pascal_connections(vertex** nodes, int n_memb){
 }
 
 
-// ============= BUILD TREE =============
-/* Kruskal's algorithm
-    // A = vazio
-// for cada vertice v pertencente a G.V
-    //      MAKE-SET(v)
-    // ordene as arestas de G.E em ordem nao decrescente de peso W
-    // for cada aresta(u, v) pertencente a G.E, em ordem de peso
-    //  if FIND-SET(u) != FIND-SET(v)
-    //      A = A U {(u, v)}
-    //      UNION(u, v)
-    // return A
-    */
+// ============= MINIMUM SPANNING TREE =============
 
 union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy){
     int n_memb = tsp_get_dimension();
@@ -194,24 +228,44 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
     // connect the nodes based on lowest distance (kruskal's algorithm)
     int max_edges = n_memb - 1;
     int edges = 0;
-    printf("Building MST...\n");
+
+    // init tour file
+    FILE* tour_file = _open_tour_();
+    _write_tour_header(tour_file);
+    tour* tour = calloc(sizeof(tour), n_memb);
+    int tour_idx = 0;
+    
+    // build mst and tour both together
     for(int i = 0; i < pascal_size(n_memb); i++){
         if(edges < max_edges){
-            edge* edge1 = edge_arr[i];
-            vertex* n1 = points[edge_get_node1_idx(edge1)];
-            vertex* n2 = points[edge_get_node2_idx(edge1)];
-            tree_node* t1 = uf_find_node(uf, vertex_get_priority(n1));
-            tree_node* t2 = uf_find_node(uf, vertex_get_priority(n2));
-            if(uf_union(uf, t1, t2)){
-                _write_in_mst_file_(tsp_get_name(), n_memb, edge_get_node1_idx(edge1) + 1, edge_get_node2_idx(edge1) + 1);
+            edge* current_edge = edge_arr[i];
+            int vertex1_idx = edge_get_node1_idx(current_edge);
+            int vertex2_idx = edge_get_node2_idx(current_edge);
+            vertex* vertex1 = points[vertex1_idx];
+            vertex* vertex2 = points[vertex2_idx];
+            tree_node* tree_node1 = uf_find_node(uf, vertex_get_priority(vertex1));
+            tree_node* tree_node2 = uf_find_node(uf, vertex_get_priority(vertex2));
+
+            if(uf_union(uf, tree_node1, tree_node2)){
+                _write_in_mst_file_(tsp_get_name(), vertex1_idx + 1, vertex2_idx + 1);
                 edges++;
+                if(!_exists_in_tour_(tour, vertex1_idx + 1)){
+                    tour[tour_idx++] = vertex1_idx + 1;
+                    _tour_write_vertex_idx_(tour_file, vertex1_idx + 1);
+                }
+                if(!_exists_in_tour_(tour, vertex2_idx + 1)){
+                    tour[tour_idx++] = vertex2_idx + 1;
+                    _tour_write_vertex_idx_(tour_file, vertex2_idx + 1);
+                }
             }
         }
         edge_destroy(edge_arr[i]);
     }
+    
+    _write_in_mst_file_(tsp_get_name(), -1, -1);
+    _close_tour_(tour_file);
     free(edge_arr);
-
-    _write_in_mst_file_(tsp_get_name(), n_memb, -1, -1);
     free(tsp_get_name());
+    free(tour);
     return uf;
 }
