@@ -7,7 +7,7 @@
 #include "../headers/utils.h"
 
 #define nan -1
-#define opcode char
+typedef char opcode;
 #define get 'g'
 #define set 's'
 #define limit 65535
@@ -15,6 +15,7 @@
 #define TSP_INPUT_FOLDER "/home/zuany/LinuxWorkEnvironmnet/Travelling-Salesman-Problem/Others/exemplos/exemplos/in/"
 #define MST_OUTPUT_FOLDER "Outputs/mst/"
 #define TOUR_OUTPUT_FOLDER "Outputs/tour/"
+#define PROFILER_OUTPUT_PATH "Profiler/srcprof.csv"
 
 // ================== READ AND WRITE =====================//
 

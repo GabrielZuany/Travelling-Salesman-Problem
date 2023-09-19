@@ -6,6 +6,24 @@
 #include "../headers/edge.h"
 #include "../headers/union_find.h"
 #include "../headers/utils.h"
+#include <time.h>
+
+// ==================== PROFILE ====================
+
+void __prof_set_header__(FILE* out){
+    fprintf(out, "N_MEMB;READ_TSP;BUILD_FULL_CONNECTED_GRAPH;BUILD_MST;BUILD_TOUR\n");
+}
+
+void _profile_writetime_(float time){
+    FILE* prof = fopen(PROFILER_OUTPUT_PATH, "a");
+    if(prof == NULL){
+        prof = fopen(PROFILER_OUTPUT_PATH, "w");
+        __prof_set_header__(prof);
+    }
+    fprintf(prof, "%f;", time);
+    fclose(prof);
+}
+
 
 // ============= GET and SET functions =============
 
@@ -115,6 +133,8 @@ vertex** tsp_read(char* filepath){
     char line[100];
 
     FILE* file = fopen(filepath, "r");
+
+    clock_t t = clock();
     while(fgets(line, 100, file) != NULL){
         if(strstr(line, "NAME")){
             sscanf(line, "NAME : %s", name);
@@ -135,6 +155,10 @@ vertex** tsp_read(char* filepath){
         fscanf(file, "%hu %f %f", &index_garbage, &x, &y);
         points[i] = vertex_init(x, y);
     }
+
+    t = clock() - t;
+    float read_time = (((float)t)/CLOCKS_PER_SEC);
+    _profile_writetime_(read_time);
 
     fclose(file);
     return points;
@@ -195,6 +219,7 @@ edge** pascal_connections(vertex** nodes, unsigned short int n_memb){
     unsigned int position = 0;
     unsigned int size = pascal_size(n_memb);
     edge** edges = malloc(sizeof(edge*) * size);
+    clock_t t = clock();
     for(unsigned short int i = 0; i < n_memb; i++){
         for(unsigned short int j = i + 1; j < n_memb; j++){
             dist = vertex_euclidean_distance(*(nodes + i), *(nodes + j));
@@ -202,6 +227,11 @@ edge** pascal_connections(vertex** nodes, unsigned short int n_memb){
         }
     }
     edge_sort(edges, size, _edge_cmp_);
+
+    t = clock() - t;
+    float full_graph_time = (((float)t)/CLOCKS_PER_SEC);
+    _profile_writetime_(full_graph_time);
+
     return edges;
 }
 
@@ -234,7 +264,7 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
     unsigned short int tour_idx = 0;
     unsigned int total_edges = pascal_size(n_memb);
     
-    // build mst and tour both together
+    // build mst and tour both together =====> to profile: 2 separated clocks
     for(unsigned int i = 0; i < total_edges; i++){
         if(edges < max_edges){
             edge* current_edge = edge_arr[i];
