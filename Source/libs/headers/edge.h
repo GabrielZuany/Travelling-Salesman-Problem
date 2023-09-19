@@ -14,7 +14,7 @@ typedef struct edge edge;
  * 
  * @note Complexity: O(1)
  */
-edge* edge_init(int node1, int node2, float distance);
+edge* edge_init(unsigned short int node1, unsigned short int node2, float distance);
 
 /**
  * @brief Get the node2 index
@@ -24,7 +24,7 @@ edge* edge_init(int node1, int node2, float distance);
  * 
  * @note Complexity: O(1)
  */
-int edge_get_node1_idx(edge* e);
+unsigned short int edge_get_node1_idx(edge* e);
 
 /**
  * @brief Get the node2 index
@@ -34,7 +34,7 @@ int edge_get_node1_idx(edge* e);
  * 
  * @note Complexity: O(1)
  */
-int edge_get_node2_idx(edge* e);
+unsigned short int edge_get_node2_idx(edge* e);
 
 /**
  * @brief Get the distance object
@@ -65,7 +65,7 @@ void edge_set_distance(edge* e, float distance);
  * 
  * @note Complexity: O(nlog(n))
  */
-void edge_sort(edge** edge_arr, int size, int (*compare)(const void*, const void*));
+void edge_sort(edge** edge_arr, unsigned int size, int (*compare)(const void*, const void*));
 
 /**
  * @brief Dealloc memory allocated for edge object.

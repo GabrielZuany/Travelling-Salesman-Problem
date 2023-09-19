@@ -5,12 +5,12 @@
 #include "../headers/utils.h"
 
 struct edge{
-    int idx_node_1;
-    int idx_node_2;
+    unsigned short int idx_node_1;
+    unsigned short int idx_node_2;
     float distance;
 };
 
-edge* edge_init(int node1, int node2, float distance){
+edge* edge_init(unsigned short int node1, unsigned short int node2, float distance){
     edge* e = malloc(sizeof(edge));
     e->idx_node_1 = node1;
     e->idx_node_2 = node2;
@@ -22,11 +22,11 @@ void edge_set_distance(edge* e, float distance){
     e->distance = distance;
 }
 
-int edge_get_node1_idx(edge* e){
+unsigned short int edge_get_node1_idx(edge* e){
     return e->idx_node_1;
 }
 
-int edge_get_node2_idx(edge* e){
+unsigned short int edge_get_node2_idx(edge* e){
     return e->idx_node_2;
 }
 
@@ -34,7 +34,7 @@ float edge_get_distance(edge* e){
     return e->distance;
 }
 
-void edge_sort(edge** edge_arr, int size, int (*compare)(const void*, const void*)){
+void edge_sort(edge** edge_arr, unsigned int size, int (*compare)(const void*, const void*)){
     qsort(edge_arr, size, sizeof(edge*), compare);
 }
 

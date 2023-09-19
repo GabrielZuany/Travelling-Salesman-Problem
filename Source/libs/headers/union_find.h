@@ -1,5 +1,8 @@
 #ifndef _UNION_FIND_
 #define _UNION_FIND_
+#define True 't'
+#define False 'f'
+#define boolean char
 
 typedef struct tree_node tree_node;
 typedef struct union_find union_find;
@@ -16,7 +19,7 @@ typedef void (*destroy_fn)(void*, ...);
  * 
  * @note Complexity: O(n)
  */
-union_find* uf_init(int size, compare_fn compare_fn, destroy_fn destroy_fn);
+union_find* uf_init(unsigned short int size, compare_fn compare_fn, destroy_fn destroy_fn);
 
 /**
  * @brief Dealloc memory allocated for union find data structure.
@@ -47,7 +50,7 @@ void* uf_find_root(union_find* uf, tree_node* node);
  *  
  *  @note Complexity: O(1)
  */
-tree_node* uf_find_node(union_find* uf, int priority);
+tree_node* uf_find_node(union_find* uf, unsigned short int priority);
 
 /**
  * @brief Retrieves the priority value of a node.
@@ -57,7 +60,7 @@ tree_node* uf_find_node(union_find* uf, int priority);
  * 
  * @note Complexity: O(1)
  */
-int tree_node_get_priority(tree_node* node);
+unsigned short int tree_node_get_priority(tree_node* node);
 
 /**
  * @brief Join 2 nodes using weighted quick sort
@@ -68,7 +71,7 @@ int tree_node_get_priority(tree_node* node);
  * 
  * @note Complexity: O(log(n))
  */
-int uf_union(union_find* uf, tree_node* node1, tree_node* node2);
+boolean uf_union(union_find* uf, tree_node* node1, tree_node* node2);
 
 /**
  * @brief 
@@ -80,7 +83,7 @@ int uf_union(union_find* uf, tree_node* node1, tree_node* node2);
  * 
  * @note Complexity: O(log(n))
  */
-int uf_is_connected(union_find* uf, tree_node* node1, tree_node* node2);
+boolean uf_is_connected(union_find* uf, tree_node* node1, tree_node* node2);
 
 /**
  * @brief Assigns a void* data value into a node previously allocacted
@@ -92,7 +95,7 @@ int uf_is_connected(union_find* uf, tree_node* node1, tree_node* node2);
  * 
  * @note Complexity: O(1)
  */
-tree_node* uf_create_node(union_find* uf, void* new_node, int priority);
+tree_node* uf_create_node(union_find* uf, void* new_node, unsigned short int priority);
 
 #ifdef _DEV_
     /**

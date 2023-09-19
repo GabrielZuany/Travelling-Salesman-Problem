@@ -7,6 +7,11 @@
 #include "../headers/utils.h"
 
 #define nan -1
+#define opcode char
+#define get 'g'
+#define set 's'
+#define limit 65535
+
 #define TSP_INPUT_FOLDER "/home/zuany/LinuxWorkEnvironmnet/Travelling-Salesman-Problem/Others/exemplos/exemplos/in/"
 #define MST_OUTPUT_FOLDER "Outputs/mst/"
 #define TOUR_OUTPUT_FOLDER "Outputs/tour/"
@@ -21,7 +26,7 @@
  * 
  * @note Complexity: O(1)
  */
-int tsp_get_dimension();
+unsigned short int tsp_get_dimension();
 
 /**
  * @brief Read a tsp file and return a list of vertexes
@@ -29,7 +34,7 @@ int tsp_get_dimension();
  * @param filepath 
  * @return vertex** 
  * 
- * @note Complexity: 
+ * @note Complexity: O(n)
  */
 vertex** tsp_read(char* filepath);
 
@@ -41,9 +46,9 @@ vertex** tsp_read(char* filepath);
  * @param dimension 
  * @param points 
  * 
- * @note Complexity: 
+ * @note Complexity: O(1)
  */
-void _create_mst_file_(char* filepath, char* name, int dimension);
+void _create_mst_file_(char* filepath, char* name, unsigned short int dimension);
 
 
 // ============================= CONNECT NODES ================================= //
@@ -57,16 +62,23 @@ void _create_mst_file_(char* filepath, char* name, int dimension);
  * 
  * @note Complexity 
  * @note Array size: T(n_memb - 1) = (N *(N+1)) / 2
+ * 
+ * @warning This function takes a lot of memory
+ * @warning This function takes a lot of time
+ * 
+ * @note Complexity: O(n^2)
  */
-edge** pascal_connections(vertex** nodes, int n_memb);
+edge** pascal_connections(vertex** nodes, unsigned short int n_memb);
 
 /**
  * @brief Return the size of edge array based on pascal_connections algorithm
  * 
  * @param n_memb 
  * @return int 
+ * 
+ * @note Complexity: O(1)
  */
-int pascal_size(int n_memb);
+unsigned int pascal_size(unsigned short int n_memb);
 
 
 // =============================== BUILD MINIMUN SPANNING TREE =============================//

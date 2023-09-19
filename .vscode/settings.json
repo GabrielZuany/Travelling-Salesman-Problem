@@ -5,6 +5,13 @@
         "random": "c",
         "*.tcc": "c",
         "string": "c",
-        "string_view": "c"
+        "string_view": "c",
+        "array": "c",
+        "initializer_list": "c",
+        "utility": "c",
+        "memory": "c",
+        "istream": "c",
+        "functional": "c",
+        "tuple": "c"
     }
 }
