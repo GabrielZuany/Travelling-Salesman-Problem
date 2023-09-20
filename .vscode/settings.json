@@ -12,6 +12,7 @@
         "memory": "c",
         "istream": "c",
         "functional": "c",
-        "tuple": "c"
+        "tuple": "c",
+        "tsp.h": "c"
     }
 }
