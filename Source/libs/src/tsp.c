@@ -134,7 +134,6 @@ vertex** tsp_read(char* filepath){
 
     FILE* file = fopen(filepath, "r");
 
-    clock_t t = clock();
     while(fgets(line, 100, file) != NULL){
         if(strstr(line, "NAME")){
             sscanf(line, "NAME : %s", name);
@@ -155,10 +154,6 @@ vertex** tsp_read(char* filepath){
         fscanf(file, "%hu %f %f", &index_garbage, &x, &y);
         points[i] = vertex_init(x, y);
     }
-
-    t = clock() - t;
-    float read_time = (((float)t)/CLOCKS_PER_SEC);
-    _profile_writetime_(read_time);
 
     fclose(file);
     return points;
@@ -219,7 +214,7 @@ edge** pascal_connections(vertex** nodes, unsigned short int n_memb){
     unsigned int position = 0;
     unsigned int size = pascal_size(n_memb);
     edge** edges = malloc(sizeof(edge*) * size);
-    clock_t t = clock();
+    
     for(unsigned short int i = 0; i < n_memb; i++){
         for(unsigned short int j = i + 1; j < n_memb; j++){
             dist = vertex_euclidean_distance(*(nodes + i), *(nodes + j));
@@ -227,10 +222,6 @@ edge** pascal_connections(vertex** nodes, unsigned short int n_memb){
         }
     }
     edge_sort(edges, size, _edge_cmp_);
-
-    t = clock() - t;
-    float full_graph_time = (((float)t)/CLOCKS_PER_SEC);
-    _profile_writetime_(full_graph_time);
 
     return edges;
 }
