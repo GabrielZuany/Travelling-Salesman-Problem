@@ -11,7 +11,7 @@
 // ==================== PROFILE ====================
 
 void __prof_set_header__(FILE* out){
-    fprintf(out, "N_MEMB;READ_TSP;BUILD_ALL_EDGES;BUILD_MST;BUILD_TOUR\n");
+    fprintf(out, "N_MEMB;READ_TSP;BUILD_ALL_EDGES;BUILD_MST;BUILD_TOUR;\n");
 }
 
 void _profile_(float data){
