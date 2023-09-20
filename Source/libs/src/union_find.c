@@ -6,34 +6,34 @@
 
 struct tree_node{
     void* data;
-    int _priority;
+    unsigned short int _priority;
 };
 
 struct union_find{
     tree_node* tree_nodes;
-    int* size_trees_arr;
-    int size;
+    unsigned short int* size_trees_arr;
+    unsigned short int size;
     compare_fn compare;
     destroy_fn destroy;
 };
 
-union_find* uf_init(int size, compare_fn cmp, destroy_fn destroy){
+union_find* uf_init(unsigned short int size, compare_fn cmp, destroy_fn destroy){
     union_find* uf = malloc(sizeof(union_find));
     uf->compare = cmp;
     uf->destroy = destroy;
     uf->size = size;
     uf->tree_nodes = malloc(sizeof(tree_node) * size);
-    uf->size_trees_arr = malloc(sizeof(int) * size);
-    for(int i = 0; i < size; i++){
+    uf->size_trees_arr = malloc(sizeof(unsigned short int) * size);
+    for(unsigned short int i = 0; i < size; i++){
         uf->tree_nodes[i].data = NULL;
-        uf->tree_nodes[i]._priority = i;
+        uf->tree_nodes[i]._priority = (unsigned short int)i;
         uf->size_trees_arr[i] = 1;
     }
     return uf;
 }
 
 void uf_destroy(union_find* uf){
-    for(int i = 0; i < uf->size; i++){
+    for(unsigned short int i = 0; i < uf->size; i++){
         if(uf->tree_nodes[i].data != NULL){
             uf->destroy(uf->tree_nodes[i].data);
         }  
@@ -43,7 +43,7 @@ void uf_destroy(union_find* uf){
     free(uf);
 }
 
-int _root_index(union_find* uf, int i){
+unsigned short int _root_index(union_find* uf, unsigned short int i){
     while (!(uf->tree_nodes[i]._priority == i)) // while not reach the root
     {
         uf->tree_nodes[i]._priority = uf->tree_nodes[uf->tree_nodes[i]._priority]._priority;
@@ -52,7 +52,7 @@ int _root_index(union_find* uf, int i){
     return i;
 }
 
-int tree_node_get_priority(tree_node* node){
+unsigned short int tree_node_get_priority(tree_node* node){
     return node->_priority;
 }
 
@@ -60,28 +60,30 @@ void* uf_find_root(union_find* uf, tree_node* node){
     return uf->tree_nodes[_root_index(uf, node->_priority)].data;
 }
 
-tree_node* uf_find_node(union_find* uf, int priority){
+tree_node* uf_find_node(union_find* uf, unsigned short int priority){
     return &(uf->tree_nodes[priority]);
 }
 
-int _tree_node_is_equal(union_find* uf, tree_node n1, tree_node n2){
-    return (n1._priority == n2._priority && uf->compare(n1.data, n2.data));
+boolean _tree_node_is_equal(union_find* uf, tree_node n1, tree_node n2){
+    if (n1._priority == n2._priority & uf->compare(n1.data, n2.data)){
+        return True;
+    }return False;
 }
 
-tree_node* uf_create_node(union_find* uf, void* new_node, int priority){
+tree_node* uf_create_node(union_find* uf, void* new_node, unsigned short int priority){
     uf->tree_nodes[priority].data = new_node;
     uf->tree_nodes[priority]._priority = priority;
     tree_node* tn = &(uf->tree_nodes[priority]);
     return tn;
 }
 
-int uf_union(union_find* uf, tree_node* node1, tree_node* node2){
-    int n1_idx = _root_index(uf, node1->_priority);
-    int n2_idx = _root_index(uf, node2->_priority);
+boolean uf_union(union_find* uf, tree_node* node1, tree_node* node2){
+    unsigned short int n1_idx = _root_index(uf, node1->_priority);
+    unsigned short int n2_idx = _root_index(uf, node2->_priority);
     tree_node n1 = uf->tree_nodes[n1_idx];
     tree_node n2 = uf->tree_nodes[n2_idx];
-    if(_tree_node_is_equal(uf, n1, n2) || n1_idx == n2_idx){
-        return 0;
+    if(_tree_node_is_equal(uf, n1, n2) == True | n1_idx == n2_idx){
+        return False;
     }
     if(uf->size_trees_arr[n1_idx] < uf->size_trees_arr[n2_idx]){
         uf->tree_nodes[n1_idx]._priority = uf->tree_nodes[n2_idx]._priority;
@@ -90,15 +92,17 @@ int uf_union(union_find* uf, tree_node* node1, tree_node* node2){
         uf->tree_nodes[n2_idx]._priority = uf->tree_nodes[n1_idx]._priority;
         uf->size_trees_arr[n1_idx] += uf->size_trees_arr[n2_idx];
     }
-    return 1;
+    return True;
 }
 
-int uf_is_connected(union_find* uf, tree_node* node1, tree_node* node2){
-    int n1_idx = _root_index(uf, node1->_priority);
-    int n2_idx = _root_index(uf, node2->_priority);
+boolean uf_is_connected(union_find* uf, tree_node* node1, tree_node* node2){
+    unsigned short int n1_idx = _root_index(uf, node1->_priority);
+    unsigned short int n2_idx = _root_index(uf, node2->_priority);
     tree_node n1 = uf->tree_nodes[n1_idx];
     tree_node n2 = uf->tree_nodes[n2_idx];
-    return n1._priority == n2._priority;
+    if(n1._priority == n2._priority){
+        return True;
+    }return False;
 }
 
 #ifdef _DEV_

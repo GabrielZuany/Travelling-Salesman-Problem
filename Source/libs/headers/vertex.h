@@ -32,7 +32,7 @@ float vertex_get_x(vertex* c);
  * 
  * @note Complexity: O(1)
  */
-void vertex_set_priority(vertex* c, int priority);
+void vertex_set_priority(vertex* c, unsigned short int priority);
 
 /**
  * @brief Get the priority
@@ -42,7 +42,7 @@ void vertex_set_priority(vertex* c, int priority);
  * 
  * @note Complexity: O(1)
  */
-int vertex_get_priority(vertex* c);
+unsigned short int vertex_get_priority(vertex* c);
 
 /**
  * @brief Get the y coordinate

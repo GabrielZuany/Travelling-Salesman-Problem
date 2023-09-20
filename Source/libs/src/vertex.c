@@ -6,7 +6,7 @@
 struct vertex{
     float x;
     float y;
-    int priority;
+    unsigned short int priority;
 };
 
 vertex* vertex_init(float x, float y){
@@ -16,11 +16,11 @@ vertex* vertex_init(float x, float y){
     return c;
 }
 
-void vertex_set_priority(vertex* c, int priority){
+void vertex_set_priority(vertex* c, unsigned short int priority){
     c->priority = priority;
 }
 
-int vertex_get_priority(vertex* c){
+unsigned short int vertex_get_priority(vertex* c){
     return c->priority;
 }
 
@@ -43,7 +43,7 @@ void vertex_destroy(vertex* c){
 int vertex_compare(void* c1, void* c2){
     vertex* c1_casted = (vertex*) c1;
     vertex* c2_casted = (vertex*) c2;
-    if(c1_casted->x == c2_casted->x && c1_casted->y == c2_casted->y)
+    if(c1_casted->x == c2_casted->x & c1_casted->y == c2_casted->y)
         return 0;
     return 1;
 }
