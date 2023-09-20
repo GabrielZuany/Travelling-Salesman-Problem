@@ -8,6 +8,7 @@
 #include "../../Source/libs/headers/tsp.h"
 
 int main(int argc, char** argv){
+    //argv[1] = "Others/exemplos/exemplos/in/berlin52.tsp";
     vertex** points = tsp_read(argv[1]);
     union_find* uf = tsp_build_tree(points, vertex_compare, vertex_destroy_wrapper);
 
