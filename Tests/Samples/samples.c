@@ -8,7 +8,6 @@
 #include "../../Source/libs/headers/tsp.h"
 
 int main(int argc, char** argv){
-    vertex** points = tsp_read(argv[1]);
-    free(points);
+    // generate random graphs
     return 0;
 }

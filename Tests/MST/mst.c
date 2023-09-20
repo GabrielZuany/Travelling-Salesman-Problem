@@ -9,6 +9,9 @@
 
 int main(int argc, char** argv){
     vertex** points = tsp_read(argv[1]);
+    union_find* uf = tsp_build_tree(points, vertex_compare, vertex_destroy_wrapper);
+
+    uf_destroy(uf);
     free(points);
     return 0;
 }
