@@ -65,7 +65,7 @@ tree_node* uf_find_node(union_find* uf, unsigned short int priority){
 }
 
 boolean _tree_node_is_equal(union_find* uf, tree_node n1, tree_node n2){
-    if (n1._priority == n2._priority & uf->compare(n1.data, n2.data)){
+    if (n1._priority == n2._priority && uf->compare(n1.data, n2.data)){
         return True;
     }return False;
 }
@@ -82,7 +82,7 @@ boolean uf_union(union_find* uf, tree_node* node1, tree_node* node2){
     unsigned short int n2_idx = _root_index(uf, node2->_priority);
     tree_node n1 = uf->tree_nodes[n1_idx];
     tree_node n2 = uf->tree_nodes[n2_idx];
-    if(_tree_node_is_equal(uf, n1, n2) == True | n1_idx == n2_idx){
+    if(_tree_node_is_equal(uf, n1, n2) == True || n1_idx == n2_idx){
         return False;
     }
     if(uf->size_trees_arr[n1_idx] < uf->size_trees_arr[n2_idx]){

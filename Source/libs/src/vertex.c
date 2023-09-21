@@ -43,7 +43,7 @@ void vertex_destroy(vertex* c){
 int vertex_compare(void* c1, void* c2){
     vertex* c1_casted = (vertex*) c1;
     vertex* c2_casted = (vertex*) c2;
-    if(c1_casted->x == c2_casted->x & c1_casted->y == c2_casted->y)
+    if(c1_casted->x == c2_casted->x && c1_casted->y == c2_casted->y)
         return 0;
     return 1;
 }

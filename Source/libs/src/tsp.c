@@ -199,7 +199,7 @@ void _write_in_mst_file_(char* name, unsigned short int idx1, unsigned short int
 
     FILE* file = fopen(filepath, "a");
 
-    if(idx1 == limit & idx2 == limit){
+    if(idx1 == limit && idx2 == limit){
         fprintf(file, "EOF");
     }else{
         fprintf(file, "%hu %hu\n", idx1, idx2);
@@ -272,21 +272,12 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
 
     // connect each node to another and sort them by distance
     edge** edge_arr = pascal_connections(points, n_memb);
-
-    // init tour file
-    FILE* tour_file = _open_tour_();
-    _write_tour_header(tour_file);
-    tour* tour = calloc(sizeof(tour), n_memb);
-    unsigned short int tour_idx = 0;
-    
+   
     // build mst and tour
     unsigned short int max_edges = n_memb - 1;
     unsigned short int edges = 0;
     unsigned int total_edges = pascal_size(n_memb);
     clock_t mst_clk = clock();
-    float mst_seconds = 0;
-    clock_t tour_clk = 0;
-    float tour_seconds = 0;
 
     for(unsigned int i = 0; i < total_edges; i++){
         if(edges < max_edges){
@@ -298,39 +289,21 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
             tree_node* tree_node1 = uf_find_node(uf, vertex_get_priority(vertex1));
             tree_node* tree_node2 = uf_find_node(uf, vertex_get_priority(vertex2));
 
-            if(uf_union(uf, tree_node1, tree_node2)){
+            if(uf_union(uf, tree_node1, tree_node2) == True){
                 _write_in_mst_file_(tsp_get_name(), vertex1_idx + 1, vertex2_idx + 1);
                 edges++;
-
-                mst_seconds += ((float)clock() - mst_clk)/CLOCKS_PER_SEC;
-                tour_clk = clock();
-                if(_exists_in_tour_(tour, vertex1_idx + 1) == False){
-                    tour[tour_idx++] = vertex1_idx + 1;
-                    _tour_write_vertex_idx_(tour_file, vertex1_idx + 1);
-                }
-                if(_exists_in_tour_(tour, vertex2_idx + 1) == False){
-                    tour[tour_idx++] = vertex2_idx + 1;
-                    _tour_write_vertex_idx_(tour_file, vertex2_idx + 1);
-                }
-                tour_seconds += ((float)clock() - tour_clk)/CLOCKS_PER_SEC;
-                tour_clk = 0;
-                
-                mst_clk = clock();
             }
         }
         if(edges == max_edges){
-            _end_seconds_(mst_seconds);
-            _end_seconds_(tour_seconds);
+            _end_clk_(mst_clk);
             edges++;            
         }
         edge_destroy(edge_arr[i]);
     }
     
     _write_in_mst_file_(tsp_get_name(), limit, limit);
-    _close_tour_(tour_file);
     free(edge_arr);
     free(tsp_get_name());
-    free(tour);
     _end_profile_();
     return uf;
 }
