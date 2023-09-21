@@ -30,10 +30,6 @@ void _end_clk_(clock_t t){
     _profile_(time_taken);
 }
 
-void _end_seconds_(float s){
-    _profile_(s);
-}
-
 void _end_profile_(){
     FILE* prof = fopen(PROFILER_OUTPUT_PATH, "a");
     fputc('\n', prof);
