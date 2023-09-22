@@ -19,6 +19,18 @@ typedef struct ForwardList ForwardList;
 ForwardList *forward_list_construct();
 
 /**
+ * @brief Returns the id of the linked list.
+ * 
+ * @param l
+ * Pointer to the linked list.
+ * @return int
+ * Id of the linked list.
+ * 
+ * @note Complexity: O(1)
+ */
+unsigned short int forward_list_get_id(ForwardList* l);
+
+/**
  * @brief Returns the size of the linked list.
  *  Returns the number of nodes in the linked list.
  * @param l
@@ -50,7 +62,7 @@ void forward_list_remove_node(ForwardList *l, Node* n);
  *
  * @note Complexity: O(1)
  */
-void forward_list_push_front(ForwardList *l, unsigned short int data);
+void forward_list_push_front(unsigned short int id, ForwardList *l, unsigned short int data);
 
 /**
  * @brief Prunsigned short int the elements of the linked list.
@@ -122,17 +134,6 @@ unsigned short int forward_list_get_head_value(ForwardList *l);
  * @note Complexity: O(1)
  */
 unsigned short int forward_list_pop_front(ForwardList *l);
-
-/**
- * @brief Create a new list given by the reverse of the given list.
- * @param l
- * Pointer to the linked list.
- * @return ForwardList*
- * Pointer to the newly allocated linked list.
- * 
- * @note Complexity: O(n)
- */
-ForwardList *forward_list_reverse(ForwardList *l);
 
 /**
  * @brief Adds all nodes from the given list to the end of the linked list.
