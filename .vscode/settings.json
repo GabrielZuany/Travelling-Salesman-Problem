@@ -13,6 +13,7 @@
         "istream": "c",
         "functional": "c",
         "tuple": "c",
-        "tsp.h": "c"
+        "tsp.h": "c",
+        "thread": "c"
     }
 }

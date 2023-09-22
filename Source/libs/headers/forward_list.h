@@ -28,7 +28,7 @@ ForwardList *forward_list_construct();
  * 
  * @note Complexity: O(1)
  */
-unsigned short int forward_list_get_id(ForwardList* l);
+unsigned short int forward_list_get_city(ForwardList* l);
 
 /**
  * @brief Returns the size of the linked list.
@@ -62,7 +62,7 @@ void forward_list_remove_node(ForwardList *l, Node* n);
  *
  * @note Complexity: O(1)
  */
-void forward_list_push_front(unsigned short int id, ForwardList *l, unsigned short int data);
+void forward_list_push_front(unsigned short int city, ForwardList *l, unsigned short int data);
 
 /**
  * @brief Prunsigned short int the elements of the linked list.

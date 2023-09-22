@@ -7,19 +7,19 @@ struct ForwardList
 {
     Node *head;
     unsigned short int size;
-    unsigned short int id;
+    unsigned short int city;
 };
 
 ForwardList *forward_list_construct(){
     ForwardList *frwd_list = (ForwardList *)malloc(sizeof(ForwardList));
     frwd_list->head= NULL;
     frwd_list->size = 0;
-    frwd_list->id = 0;
+    frwd_list->city = 0;
     return frwd_list;
 }
 
-unsigned short int forward_list_get_id(ForwardList* l){
-    return l->id;
+unsigned short int forward_list_get_city(ForwardList* l){
+    return l->city;
 }
 
 unsigned short int forward_list_size(ForwardList *l){
@@ -28,17 +28,17 @@ unsigned short int forward_list_size(ForwardList *l){
     return l->size;
 }
 
-void forward_list_push_front(unsigned short int id, ForwardList *l, unsigned short int data){
+void forward_list_push_front(unsigned short int city, ForwardList *l, unsigned short int data){
     Node * N = node_construct(data, l->head);
     l->head = N;
     l->size++;
-    l->id = id;
+    l->city = city;
 }
 
 void forward_list_print(ForwardList *l, void (*print_fn)(int)){
     Node* reference = l->head;
 
-    printf("id: %d\n[", l->id);
+    printf("city: %d\n[", l->city);
     while(l->head != NULL){
         print_fn(node_get_value(l->head));
         if(node_get_next(l->head) != NULL) 
