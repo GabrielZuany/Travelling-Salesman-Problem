@@ -31,7 +31,7 @@ void forward_list_push_front(unsigned short int city, ForwardList *l, unsigned s
 void forward_list_print(ForwardList *l, void (*print_fn)(int)){
     Node* reference = l->head;
 
-    printf("city: %d\n[", l->city);
+    printf("[");
     while(l->head != NULL){
         print_fn(node_get_value(l->head));
         if(node_get_next(l->head) != NULL) 

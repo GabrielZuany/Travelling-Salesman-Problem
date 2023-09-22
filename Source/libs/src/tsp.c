@@ -252,6 +252,10 @@ void _set_graph_vertices_(union_find* uf, vertex** points, unsigned short int n_
     }
 }
 
+void print_int(int value){
+    printf("%d ", value);
+}
+
 union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy){
     unsigned short int n_memb = tsp_get_dimension();
     union_find* uf = uf_init(n_memb, vertex_compare, vertex_destroy);
@@ -295,6 +299,12 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
             _end_clk_(mst_clk);
             edges++;
         }
+    }
+
+    for(int i=0; i<n_memb; i++){
+        printf("City Id [%d]: ", i+1);
+        forward_list_print(arr_adjacency_lists[i], print_int);
+        printf("\n---\n\n");
     }
 
     _write_in_mst_file_(tsp_get_name(), limit, limit);
