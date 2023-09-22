@@ -63,6 +63,8 @@ float vertex_get_y(vertex* c);
  */
 void vertex_destroy(vertex* c);
 
+void vertex_print(vertex* v);
+
 /**
  * @brief 
  * 

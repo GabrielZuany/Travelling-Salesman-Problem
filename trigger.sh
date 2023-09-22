@@ -17,4 +17,4 @@ do
 done
 
 echo "Running profiler.py"
-#source ./Profiler/profiler.py
+python ./Profiler/profiler.py

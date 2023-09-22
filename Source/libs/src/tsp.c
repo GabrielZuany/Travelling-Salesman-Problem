@@ -3,23 +3,34 @@
 #include <string.h>
 #include "../headers/vertex.h"
 #include "../headers/tsp.h"
-#include "../headers/edge.h"
+//#include "../headers/edge.h"
 #include "../headers/union_find.h"
 #include "../headers/utils.h"
 #include "../headers/forward_list.h"
 #include <time.h>
 
+struct edge{
+    unsigned short int idx_node_1;
+    unsigned short int idx_node_2;
+    float distance;
+};
+
 // ==================== PROFILE ====================
 
 void __prof_set_header__(FILE* out){
-    fprintf(out, "N_MEMB;READ_TSP;BUILD_ALL_EDGES;BUILD_MST;BUILD_TOUR;\n");
+    //fprintf(out, "N_MEMB;READ_TSP;BUILD_ALL_EDGES;BUILD_MST;BUILD_TOUR;\n");
+    fwrite("N_MEMB;READ_TSP;BUILD_ALL_EDGES;SORT_EDGES;BUILD_MST;", sizeof(char), 53, out);
+    fputc('\n', out);
 }
 
 void _profile_(float data){
-    FILE* prof = fopen(PROFILER_OUTPUT_PATH, "a");
+    FILE* prof = fopen(PROFILER_OUTPUT_PATH, "r");
     if(prof == NULL){
         prof = fopen(PROFILER_OUTPUT_PATH, "w");
         __prof_set_header__(prof);
+    }else{
+        fclose(prof);
+        prof = fopen(PROFILER_OUTPUT_PATH, "a");
     }
     fprintf(prof, "%f;", data);
     fclose(prof);
@@ -212,39 +223,43 @@ unsigned int pascal_size(unsigned short int n_memb){
 }
 
 int _edge_cmp_(const void* a, const void* b){
-    edge* e1 = *(edge**)a;
-    edge* e2 = *(edge**)b;
-    float d1 = edge_get_distance(e1);
-    float d2 = edge_get_distance(e2);
-    if(d1 > d2){
-        return 1;
-    }else if(d1 < d2){
+    edge* edge_a = (edge*) a;
+    edge* edge_b = (edge*) b;
+    if(edge_a->distance < edge_b->distance){
         return -1;
+    }else if(edge_a->distance > edge_b->distance){
+        return 1;
     }else{
         return 0;
     }
 }
 
-edge** pascal_connections(vertex** nodes, unsigned short int n_memb){
-    float dist = 0;
+edge* pascal_connections(vertex** nodes, unsigned short int n_memb){
     unsigned int position = 0;
     unsigned int size = pascal_size(n_memb);
-    edge** edges = malloc(sizeof(edge*) * size);
+    edge* edges = malloc(sizeof(edge) * size);
     clock_t t = clock();
 
     for(unsigned short int i = 0; i < n_memb; i++){
-        for(unsigned short int j = i + 1; j < n_memb; j++){
-            dist = vertex_euclidean_distance(*(nodes + i), *(nodes + j));
-            edges[position++] = edge_init(i, j, dist);
+        for(unsigned short int j = i+1; j < n_memb; j++){
+            edges[position].idx_node_1 = i;
+            edges[position].idx_node_2 = j;
+            edges[position].distance = vertex_euclidean_distance(nodes[i], nodes[j]);
+            position++;
         }
     }
-
     _end_clk_(t);
+    printf("Conexoes construidas\n");
 
     t = clock();
-    edge_sort(edges, size, _edge_cmp_);
-    _end_clk_(t);
+    qsort(edges, size, sizeof(edge), _edge_cmp_);
+    printf("Conexoes ordenadas\n");
 
+    // for(int i = 0; i < size; i++){
+    //     printf("%d %d %f\n", edges[i].idx_node_1, edges[i].idx_node_2, edges[i].distance);
+    // }
+
+    _end_clk_(t);
     return edges;
 }
 
@@ -305,7 +320,7 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
     _set_graph_vertices_(uf,  points, n_memb);
 
     // connect each node to another and sort them by distance
-    edge** edge_arr = pascal_connections(points, n_memb);
+    edge* edge_arr = pascal_connections(points, n_memb);
    
     // build mst and tour
     unsigned short int max_edges = n_memb - 1;
@@ -315,31 +330,32 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
 
     for(unsigned int i = 0; i < total_edges; i++){
         if(edges < max_edges){
-            edge* current_edge = edge_arr[i];
-            unsigned short int vertex1_idx = edge_get_node1_idx(current_edge);
-            unsigned short int vertex2_idx = edge_get_node2_idx(current_edge);
+            edge current_edge = edge_arr[i];
+            unsigned short int vertex1_idx = current_edge.idx_node_1; // O(1)
+            unsigned short int vertex2_idx = current_edge.idx_node_2; // O(1)
             vertex* vertex1 = points[vertex1_idx];
             vertex* vertex2 = points[vertex2_idx];
-            tree_node* tree_node1 = uf_find_node(uf, vertex_get_priority(vertex1));
-            tree_node* tree_node2 = uf_find_node(uf, vertex_get_priority(vertex2));
+            tree_node* tree_node1 = uf_find_node(uf, vertex_get_priority(vertex1)); // O(1)
+            tree_node* tree_node2 = uf_find_node(uf, vertex_get_priority(vertex2)); // O(1)
 
-            if(uf_union(uf, tree_node1, tree_node2) == True){
+            if(uf_union(uf, tree_node1, tree_node2) == True){ // O(2 ln(N))
                 _write_in_mst_file_(tsp_get_name(), vertex1_idx + 1, vertex2_idx + 1);
-                forward_list_push_front(vertex1_idx, arr_adjacency_lists[vertex1_idx], vertex2_idx);
-                forward_list_print(arr_adjacency_lists[vertex1_idx], print_int);
-                printf("\n--\n");
+                //forward_list_push_front(vertex1_idx, arr_adjacency_lists[vertex1_idx], vertex2_idx);
+                //forward_list_print(arr_adjacency_lists[vertex1_idx], print_int);
+                //printf("\n--\n");
                 edges++;
             }
         }
         if(edges == max_edges){
             _end_clk_(mst_clk);
             edges++;
+            printf("MST construida\nLiberando memoria");
         }
-        edge_destroy(edge_arr[i]);
+        //free(edge_arr+i);
     }
 
     _write_in_mst_file_(tsp_get_name(), limit, limit);
-    free(edge_arr);
+    //free(edge_arr);
     free(tsp_get_name());
     _end_profile_();
     // _adjacency_list_destroy_(n_memb);

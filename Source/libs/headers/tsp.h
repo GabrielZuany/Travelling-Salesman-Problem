@@ -69,7 +69,7 @@ void _create_mst_file_(char* filepath, char* name, unsigned short int dimension)
  * 
  * @note Complexity: O(n^2)
  */
-edge** pascal_connections(vertex** nodes, unsigned short int n_memb);
+edge* pascal_connections(vertex** nodes, unsigned short int n_memb);
 
 /**
  * @brief Return the size of edge array based on pascal_connections algorithm
