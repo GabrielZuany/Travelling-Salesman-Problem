@@ -7,7 +7,7 @@ def remove_all_rand_files():
             os.remove(f"RandomInputs/{filename}")
 
 def  gen_files():
-    for i in range(0, 10000, 500):
+    for i in range(500, 15000, 500):
         with open(f"RandomInputs/rand_{i}.tsp", "w") as file:
             file.write(f"NAME: rand_{i}\n")
             file.write("COMMENT: random generated\n")

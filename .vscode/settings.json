@@ -14,6 +14,8 @@
         "functional": "c",
         "tuple": "c",
         "tsp.h": "c",
-        "thread": "c"
+        "thread": "c",
+        "cmath": "c",
+        "complex": "c"
     }
 }

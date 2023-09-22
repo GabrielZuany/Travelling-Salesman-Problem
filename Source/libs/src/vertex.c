@@ -48,6 +48,10 @@ int vertex_compare(void* c1, void* c2){
     return 1;
 }
 
+void vertex_print(vertex* v){
+    printf("x: %f, y: %f\n", v->x, v->y);
+}
+
 float vertex_euclidean_distance(vertex* c1, vertex* c2){
     return euclidean_distance(c1->x, c1->y, c2->x, c2->y);
 }

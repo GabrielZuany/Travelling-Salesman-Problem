@@ -1,11 +1,10 @@
 #ifndef _TSP_
 #define _TSP_
 
-#include "vertex.h"
-#include "edge.h"
-#include "union_find.h"
-#include "utils.h"
-#include "forward_list.h"
+#include "../headers/vertex.h"
+#include "../headers/union_find.h"
+#include "../headers/utils.h"
+#include "../headers/forward_list.h"
 
 #define nan -1
 typedef char opcode;
@@ -17,6 +16,8 @@ typedef char opcode;
 #define MST_OUTPUT_FOLDER "Outputs/mst/"
 #define TOUR_OUTPUT_FOLDER "Outputs/tour/"
 #define PROFILER_OUTPUT_PATH "Profiler/srcprof.csv"
+
+typedef struct edge edge;
 
 // ================== READ AND WRITE =====================//
 
@@ -70,7 +71,7 @@ void _create_mst_file_(char* filepath, char* name, unsigned short int dimension)
  * 
  * @note Complexity: O(n^2)
  */
-edge** pascal_connections(vertex** nodes, unsigned short int n_memb);
+edge* pascal_connections(vertex** nodes, unsigned short int n_memb);
 
 /**
  * @brief Return the size of edge array based on pascal_connections algorithm
