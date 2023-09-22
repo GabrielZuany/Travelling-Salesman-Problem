@@ -3,13 +3,6 @@
 #include "../headers/node.h"
 #include "../headers/forward_list.h"
 
-struct ForwardList
-{
-    Node *head;
-    unsigned short int size;
-    unsigned short int city;
-};
-
 ForwardList *forward_list_construct(){
     ForwardList *frwd_list = (ForwardList *)malloc(sizeof(ForwardList));
     frwd_list->head= NULL;
@@ -57,7 +50,7 @@ Node* forward_list_get_head_node(ForwardList *l){
 unsigned short int forward_list_get_head_value(ForwardList *l){
     return node_get_value(l->head);
 }
-
+typedef int (*list_comp_fn)(const void*, const void*);
 Node* forward_list_get_node(ForwardList *l, unsigned short int i){
     unsigned short int count = 0;
     unsigned short int len = forward_list_size(l);
@@ -147,4 +140,8 @@ void forward_list_destroy(ForwardList *l){
 unsigned short int forward_list_is_empty(ForwardList *l){
     if(l->head == NULL) return 1;
     return 0;
+}
+
+void forward_list_sort(ForwardList**l_arr, unsigned int size, int (*compare)(const void*, const void*)){
+    qsort(l_arr, size, sizeof(ForwardList*), compare);
 }

@@ -4,7 +4,12 @@
 
 #include "node.h"
 
-typedef struct ForwardList ForwardList;
+typedef struct
+{
+    Node *head;
+    unsigned short int size;
+    unsigned short int city;
+}ForwardList;
 
 /**
  * @brief Construct a new Linked List:: Linked List object
@@ -166,5 +171,7 @@ void forward_list_destroy(ForwardList *l);
  * @note Complexity: O(1)
  */
 unsigned short int forward_list_is_empty(ForwardList *l);
+
+void forward_list_sort(ForwardList**l_arr, unsigned int size, int (*compare)(const void*, const void*));
 
 #endif

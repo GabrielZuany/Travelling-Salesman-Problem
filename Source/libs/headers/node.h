@@ -3,6 +3,12 @@
 
 typedef struct Node Node;
 
+struct Node
+{
+    unsigned short int value;
+    struct Node *next;
+};
+
 /**
  * @brief Construct a new Node 
  * 
