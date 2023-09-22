@@ -325,15 +325,15 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
 
             if(uf_union(uf, tree_node1, tree_node2) == True){
                 _write_in_mst_file_(tsp_get_name(), vertex1_idx + 1, vertex2_idx + 1);
-                printf("\n[%d] adjacency list: ", vertex1_idx);
-                forward_list_push_front(arr_adjacency_lists[vertex1_idx], vertex2_idx);
+                forward_list_push_front(vertex1_idx, arr_adjacency_lists[vertex1_idx], vertex2_idx);
                 forward_list_print(arr_adjacency_lists[vertex1_idx], print_int);
+                printf("\n--\n");
                 edges++;
             }
         }
         if(edges == max_edges){
             _end_clk_(mst_clk);
-            edges++;            
+            edges++;
         }
         edge_destroy(edge_arr[i]);
     }

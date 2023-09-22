@@ -7,13 +7,19 @@ struct ForwardList
 {
     Node *head;
     unsigned short int size;
+    unsigned short int city;
 };
 
 ForwardList *forward_list_construct(){
     ForwardList *frwd_list = (ForwardList *)malloc(sizeof(ForwardList));
     frwd_list->head= NULL;
     frwd_list->size = 0;
+    frwd_list->city = 0;
     return frwd_list;
+}
+
+unsigned short int forward_list_get_city(ForwardList* l){
+    return l->city;
 }
 
 unsigned short int forward_list_size(ForwardList *l){
@@ -22,16 +28,17 @@ unsigned short int forward_list_size(ForwardList *l){
     return l->size;
 }
 
-void forward_list_push_front(ForwardList *l, unsigned short int data){
+void forward_list_push_front(unsigned short int city, ForwardList *l, unsigned short int data){
     Node * N = node_construct(data, l->head);
     l->head = N;
     l->size++;
+    l->city = city;
 }
 
 void forward_list_print(ForwardList *l, void (*print_fn)(int)){
     Node* reference = l->head;
 
-    printf("[");
+    printf("city: %d\n[", l->city);
     while(l->head != NULL){
         print_fn(node_get_value(l->head));
         if(node_get_next(l->head) != NULL) 
@@ -121,18 +128,6 @@ void forward_list_remove_node(ForwardList *l, Node* n){
         l->head = node_get_next(l->head);
     }
     l->head = reference;
-}
-
-ForwardList *forward_list_reverse(ForwardList *l){
-    ForwardList* reversed_list = forward_list_construct();
-    unsigned short int size = forward_list_size(l), count = 0;
-    unsigned short int value;
-    while(count < size){
-        value = forward_list_get(l, count);
-        forward_list_push_front(reversed_list, value);
-        count++;
-    }
-    return reversed_list;
 }
 
 void forward_list_cat(ForwardList *l, ForwardList *m){
