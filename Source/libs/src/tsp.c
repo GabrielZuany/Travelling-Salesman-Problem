@@ -6,6 +6,7 @@
 #include "../headers/edge.h"
 #include "../headers/union_find.h"
 #include "../headers/utils.h"
+#include "../headers/forward_list.h"
 #include <time.h>
 
 // ==================== PROFILE ====================
@@ -250,6 +251,36 @@ edge** pascal_connections(vertex** nodes, unsigned short int n_memb){
 
 // ============= MINIMUM SPANNING TREE =============
 
+ForwardList** _adjacency_list_(opcode mode, ForwardList** adjacency_list){
+    static ForwardList** _this_adjacency_list_;
+    if(mode == get){
+        return _this_adjacency_list_;
+    }else if(mode == set){
+        _this_adjacency_list_ = adjacency_list;
+    }
+}
+
+ForwardList** _get_adjacency_list_(){
+    return _adjacency_list_(get, NULL);
+}
+
+void _set_adjacency_list_(ForwardList** adjacency_list){
+    _adjacency_list_(set, adjacency_list);
+}
+
+void _adjacency_list_destroy_(unsigned short int n_memb){
+    ForwardList** arr_adjacency_lists = _get_adjacency_list_();
+    for(unsigned short int i = 0; i < n_memb; i++){
+        forward_list_destroy(arr_adjacency_lists[i]);
+    }
+    free(arr_adjacency_lists);
+}
+
+void print_int(int i){
+    printf("%d ", i);
+}
+
+
 void _set_graph_vertices_(union_find* uf, vertex** points, unsigned short int n_memb){
     unsigned short int priority = 0;
     for(unsigned short int i = 0; i<n_memb; i++){
@@ -262,6 +293,13 @@ void _set_graph_vertices_(union_find* uf, vertex** points, unsigned short int n_
 union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy){
     unsigned short int n_memb = tsp_get_dimension();
     union_find* uf = uf_init(n_memb, vertex_compare, vertex_destroy);
+
+    // each position contains a forward list that represents the adjacency list of the vertex
+    ForwardList** arr_adjacency_lists = malloc(sizeof(ForwardList*) * n_memb);
+    for(unsigned short int i = 0; i < n_memb; i++){
+        arr_adjacency_lists[i] = forward_list_construct();
+    }
+    _set_adjacency_list_(arr_adjacency_lists);
 
     // build not connected graph
     _set_graph_vertices_(uf,  points, n_memb);
@@ -287,6 +325,9 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
 
             if(uf_union(uf, tree_node1, tree_node2) == True){
                 _write_in_mst_file_(tsp_get_name(), vertex1_idx + 1, vertex2_idx + 1);
+                printf("\n[%d] adjacency list: ", vertex1_idx);
+                forward_list_push_front(arr_adjacency_lists[vertex1_idx], vertex2_idx);
+                forward_list_print(arr_adjacency_lists[vertex1_idx], print_int);
                 edges++;
             }
         }
@@ -296,10 +337,11 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
         }
         edge_destroy(edge_arr[i]);
     }
-    
+
     _write_in_mst_file_(tsp_get_name(), limit, limit);
     free(edge_arr);
     free(tsp_get_name());
     _end_profile_();
+    // _adjacency_list_destroy_(n_memb);
     return uf;
 }
