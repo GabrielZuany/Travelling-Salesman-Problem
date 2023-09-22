@@ -1,10 +1,11 @@
 #ifndef _TSP_
 #define _TSP_
 
-#include "../headers/vertex.h"
-#include "../headers/edge.h"
-#include "../headers/union_find.h"
-#include "../headers/utils.h"
+#include "vertex.h"
+#include "edge.h"
+#include "union_find.h"
+#include "utils.h"
+#include "forward_list.h"
 
 #define nan -1
 typedef char opcode;
@@ -95,5 +96,9 @@ unsigned int pascal_size(unsigned short int n_memb);
  * @note Complexity: 
  */
 union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy);
+
+ForwardList** _get_adjacency_list_();
+
+char* tsp_get_name();
 
 #endif

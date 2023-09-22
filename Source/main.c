@@ -14,13 +14,13 @@ int main(int argc, char** argv){
     //argv[1] = "Others/exemplos/exemplos/in/berlin52.tsp";
     vertex** points = tsp_read(argv[1]);
     union_find* uf = tsp_build_tree(points, vertex_compare, vertex_destroy_wrapper);
-    
+
     Tour *tour = tour_construct(_get_adjacency_list_(), tsp_get_dimension());
 
-    /*tour_creat(tour);
+    tour_create(tour);
 
-    tour_write_file(tour, "../Outputs/tour/teste.txt");
-    */
+    tour_write_file(tour, "Outputs/tour/teste.tour");
+    
     
     tour_destroy(tour);
     uf_destroy(uf);
