@@ -3,7 +3,6 @@
 #include <string.h>
 #include "../headers/vertex.h"
 #include "../headers/tsp.h"
-//#include "../headers/edge.h"
 #include "../headers/union_find.h"
 #include "../headers/utils.h"
 #include "../headers/forward_list.h"
@@ -101,52 +100,6 @@ char* tsp_get_filepath(){
 void tsp_set_filepath(char* filepath){
     _filepath_(filepath, set);
 }
-
-
-// ==================== TOUR ===================
-
-typedef unsigned short int tour;
-
-// need to optimize
-boolean _exists_in_tour_(unsigned short int* tour, unsigned short int id){
-    unsigned short int dimension = tsp_get_dimension();
-    for(unsigned short int i = 0; i < dimension; i++){
-        if(tour[i] == id){
-            return True;
-        }
-    }
-    return False;
-}
-
-FILE* _open_tour_(){
-    char* name = tsp_get_name();
-    char* folderpath = TOUR_OUTPUT_FOLDER;
-    char* filepath = malloc(sizeof(char) * 1000);
-    strcpy(filepath, folderpath);
-    strcat(filepath, name);
-    strcat(filepath, ".tour");
-
-    FILE* file = fopen(filepath, "w");
-    free(filepath);
-    return file;
-}
-
-void _close_tour_(FILE* tour_file){
-    fprintf(tour_file, "EOF");
-    fclose(tour_file);
-}
-
-void _write_tour_header(FILE* tour_file){
-    char* name = tsp_get_name();
-    char* type = "TOUR";
-    unsigned short int dimension = tsp_get_dimension();
-    fprintf(tour_file, "NAME: %s\nTYPE: %s\nDIMENSION: %hu\nTOUR_SECTION\n", name, type, dimension);    
-}
-
-void _tour_write_vertex_idx_(FILE* tour_file, unsigned short int vertex_idx){
-    fprintf(tour_file, "%hu\n", vertex_idx);
-}
-
 
 // ============= READ and WRITE functions =============
 
@@ -249,16 +202,9 @@ edge* pascal_connections(vertex** nodes, unsigned short int n_memb){
         }
     }
     _end_clk_(t);
-    printf("Conexoes construidas\n");
 
     t = clock();
     qsort(edges, size, sizeof(edge), _edge_cmp_);
-    printf("Conexoes ordenadas\n");
-
-    // for(int i = 0; i < size; i++){
-    //     printf("%d %d %f\n", edges[i].idx_node_1, edges[i].idx_node_2, edges[i].distance);
-    // }
-
     _end_clk_(t);
     return edges;
 }
@@ -290,11 +236,6 @@ void _adjacency_list_destroy_(unsigned short int n_memb){
     }
     free(arr_adjacency_lists);
 }
-
-void print_int(int i){
-    printf("%d ", i);
-}
-
 
 void _set_graph_vertices_(union_find* uf, vertex** points, unsigned short int n_memb){
     unsigned short int priority = 0;
@@ -340,24 +281,20 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
 
             if(uf_union(uf, tree_node1, tree_node2) == True){ // O(2 ln(N))
                 _write_in_mst_file_(tsp_get_name(), vertex1_idx + 1, vertex2_idx + 1);
-                //forward_list_push_front(vertex1_idx, arr_adjacency_lists[vertex1_idx], vertex2_idx);
-                //forward_list_print(arr_adjacency_lists[vertex1_idx], print_int);
-                //printf("\n--\n");
+                forward_list_push_front(vertex1_idx, arr_adjacency_lists[vertex1_idx], vertex2_idx);
                 edges++;
             }
         }
         if(edges == max_edges){
             _end_clk_(mst_clk);
             edges++;
-            printf("MST construida\nLiberando memoria");
         }
-        //free(edge_arr+i);
     }
 
     _write_in_mst_file_(tsp_get_name(), limit, limit);
-    //free(edge_arr);
+    free(edge_arr);
     free(tsp_get_name());
     _end_profile_();
-    // _adjacency_list_destroy_(n_memb);
+    _adjacency_list_destroy_(n_memb);
     return uf;
 }

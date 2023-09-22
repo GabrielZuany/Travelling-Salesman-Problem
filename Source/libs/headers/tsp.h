@@ -2,7 +2,6 @@
 #define _TSP_
 
 #include "../headers/vertex.h"
-#include "../headers/edge.h"
 #include "../headers/union_find.h"
 #include "../headers/utils.h"
 
@@ -16,6 +15,8 @@ typedef char opcode;
 #define MST_OUTPUT_FOLDER "Outputs/mst/"
 #define TOUR_OUTPUT_FOLDER "Outputs/tour/"
 #define PROFILER_OUTPUT_PATH "Profiler/srcprof.csv"
+
+typedef struct edge edge;
 
 // ================== READ AND WRITE =====================//
 
