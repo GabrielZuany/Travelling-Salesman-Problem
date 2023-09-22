@@ -1,12 +1,6 @@
 #include "../headers/node.h"
 #include <stdlib.h>
 
-struct Node
-{
-    unsigned short int value;
-    struct Node *next;
-};
-
 Node *node_construct(unsigned short int value, Node *next){
     Node *node = (Node *)malloc(sizeof(Node));
     node->value = value;

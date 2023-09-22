@@ -110,6 +110,12 @@ vertex** tsp_read(char* filepath){
     char line[100];
 
     FILE* file = fopen(filepath, "r");
+
+    if(file == NULL){
+        printf("Erro ao abrir o arquivo!\n");
+        exit(1);
+    }
+    
     clock_t t = clock();
     while(fgets(line, 100, file) != NULL){
         if(strstr(line, "NAME")){
