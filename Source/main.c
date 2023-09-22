@@ -4,7 +4,6 @@
 #include "libs/headers/union_find.h"
 #include "libs/headers/vertex.h"
 #include "libs/headers/utils.h"
-#include "libs/headers/edge.h"
 #include "libs/headers/tsp.h"
 #include "libs/headers/forward_list.h"
 #include "libs/headers/tour.h"
