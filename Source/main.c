@@ -16,9 +16,9 @@ int main(int argc, char** argv){
 
     Tour *tour = tour_construct(_get_adjacency_list_(), tsp_get_dimension());
 
-    tour_create(tour);
+    tour_create(tour, 0);
 
-    tour_write_file(tour, "Outputs/tour/teste.tour");
+    tour_write_file(tour);
     
     
     tour_destroy(tour);

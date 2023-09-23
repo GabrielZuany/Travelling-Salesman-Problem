@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 struct Tour{
     ForwardList **adjacent_list;
@@ -48,42 +49,55 @@ void tour_destroy(Tour *tour){
     free(tour);
 }
 
-void dfs(Tour *tour, int *visited, int city, int *numVisitedCities) {
-    // Marque a cidade como visitada
-    visited[city] = 1;
-    tour->tour[*numVisitedCities] = city;
-    (*numVisitedCities)++;
+void tour_create(Tour *tour , int start_city) {
+    
+    bool* visited = (bool*)malloc(tour->num_cities * sizeof(bool));
 
-    // Verifique todas as cidades adjacentes
-    for (Node *node = tour->adjacent_list[city]->head; node != NULL; node = node->next) {
-        int adjacentCity = node->value;
-        if (!visited[adjacentCity]) {
-            dfs(tour, visited, adjacentCity, numVisitedCities);
+    for (int i = 0; i < tour->num_cities; i++) {
+        visited[i] = false;
+    }
+
+    // Pilha para rastrear os nós a serem visitados
+    int* stack = (int*)malloc(tour->num_cities * sizeof(int));
+    int top = -1;
+    int num_cities_visited = 0;
+
+    // Empilhe o nó inicial
+    stack[++top] = start_city;
+
+    while (top >= 0) {
+        // Desempilhe um nó
+        int vertex = stack[top--];
+
+        // Se o nó ainda não foi visitado
+        if (!visited[vertex]) {
+            tour->tour[num_cities_visited] = vertex;
+            num_cities_visited++;
+            visited[vertex] = true;
+        }
+
+        // Empilhe os nós adjacentes não visitados
+        Node* current = tour->adjacent_list[vertex]->head;
+        
+        while (current != NULL) {
+            if (!visited[current->value]) {
+                stack[++top] = current->value;
+            }
+            current = current->next;
         }
     }
+
+    free(visited);
+    free(stack);
 }
 
-void tour_create(Tour *tour) {
-    int numCities = tour->num_cities;
-    int *visited = (int*)calloc(numCities, sizeof(int));
-    int numVisitedCities = 0;
+void tour_write_file(Tour *tour){
 
-    // Comece o DFS a partir da cidade 0 (ou qualquer cidade inicial desejada)
-    dfs(tour, visited, 0, &numVisitedCities);
-
-    // Certifique-se de que todas as cidades foram visitadas exatamente uma vez
-    if (numVisitedCities == numCities) {
-        // Se sim, a tour foi criada com sucesso
-        free(visited);
-        return;
-    } else {
-        // Caso contrário, algo deu errado
-        free(visited);
-        // Lide com o erro aqui, se necessário
-    }
-}
-
-void tour_write_file(Tour *tour, char *path){
+    char *path = malloc(sizeof(char)*100);
+    path = strcpy(path, "Outputs/tour/");
+    path = strcat(path, tsp_get_name());
+    char *aux = ".tour";
+    path = strcat(path, aux);
 
     FILE *arq = fopen(path,"w");
 
@@ -104,4 +118,7 @@ void tour_write_file(Tour *tour, char *path){
     fprintf(arq,"EOF");
 
     fclose(arq);
+
+    free(tsp_get_name());
+    free(path);
 }
