@@ -11,27 +11,8 @@ struct Tour{
     int num_cities;
 };
 
-int forward_list_comp(const void *a, const void *b){
-    
-    ForwardList* l1 = *(ForwardList**)a;
-    ForwardList* l2 = *(ForwardList**)b;
-    unsigned short int city1 = l1->city;
-    unsigned short int city2 = l1->city;
-    if(city1 > city2){
-        return 1;
-    }else if(city1 < city2){
-        return -1;
-    }else{
-        return 0;
-    }
-}
-
 Tour *tour_construct(ForwardList **adjacent_list, int num_cities){
-
     Tour *tour = (Tour*) malloc(sizeof(Tour));
-    
-    forward_list_sort(adjacent_list, num_cities, forward_list_comp);
-
     tour->adjacent_list = adjacent_list;
     tour->tour = (int*) calloc(num_cities,sizeof(int));
     tour->num_cities = num_cities;

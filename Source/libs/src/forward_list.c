@@ -141,7 +141,3 @@ unsigned short int forward_list_is_empty(ForwardList *l){
     if(l->head == NULL) return 1;
     return 0;
 }
-
-void forward_list_sort(ForwardList**l_arr, unsigned int size, int (*compare)(const void*, const void*)){
-    qsort(l_arr, size, sizeof(ForwardList*), compare);
-}

@@ -172,6 +172,4 @@ void forward_list_destroy(ForwardList *l);
  */
 unsigned short int forward_list_is_empty(ForwardList *l);
 
-void forward_list_sort(ForwardList**l_arr, unsigned int size, int (*compare)(const void*, const void*));
-
 #endif

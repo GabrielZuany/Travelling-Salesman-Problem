@@ -102,4 +102,8 @@ ForwardList** _get_adjacency_list_();
 
 char* tsp_get_name();
 
+void end_profile();
+
+void profile_init();
+
 #endif

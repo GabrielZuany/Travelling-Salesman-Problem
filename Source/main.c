@@ -9,8 +9,8 @@
 #include "libs/headers/tour.h"
 
 int main(int argc, char** argv){
-    
     //argv[1] = "Others/exemplos/exemplos/in/berlin52.tsp";
+    profile_init();
     vertex** points = tsp_read(argv[1]);
     union_find* uf = tsp_build_tree(points, vertex_compare, vertex_destroy_wrapper);
 
@@ -24,5 +24,6 @@ int main(int argc, char** argv){
     tour_destroy(tour);
     uf_destroy(uf);
     free(points);
+    end_profile();
     return 0;
 }

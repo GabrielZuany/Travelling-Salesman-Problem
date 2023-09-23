@@ -18,20 +18,19 @@ struct edge{
 
 void __prof_set_header__(FILE* out){
     //fprintf(out, "N_MEMB;READ_TSP;BUILD_ALL_EDGES;BUILD_MST;BUILD_TOUR;\n");
-    fwrite("N_MEMB;READ_TSP;BUILD_ALL_EDGES;SORT_EDGES;BUILD_MST;", sizeof(char), 53, out);
+    fwrite("N_MEMB;READ_TSP;BUILD_ALL_EDGES;SORT_EDGES;BUILD_MST;BUILD_TOUR;", sizeof(char), 64, out);
     fputc('\n', out);
 }
 
+void profile_init(){
+    FILE* prof = fopen(PROFILER_OUTPUT_PATH, "w");
+    __prof_set_header__(prof);
+    fclose(prof);
+}
+
 void _profile_(float data){
-    FILE* prof = fopen(PROFILER_OUTPUT_PATH, "r");
-    if(prof == NULL){
-        prof = fopen(PROFILER_OUTPUT_PATH, "w");
-        __prof_set_header__(prof);
-    }else{
-        fclose(prof);
-        prof = fopen(PROFILER_OUTPUT_PATH, "a");
-    }
-    fprintf(prof, "%f;", data);
+    FILE* prof = fopen(PROFILER_OUTPUT_PATH, "a");
+    fprintf(prof, "%.6f;", data);
     fclose(prof);
 }
 
@@ -41,7 +40,7 @@ void _end_clk_(clock_t t){
     _profile_(time_taken);
 }
 
-void _end_profile_(){
+void end_profile(){
     FILE* prof = fopen(PROFILER_OUTPUT_PATH, "a");
     fputc('\n', prof);
     fclose(prof);
@@ -304,7 +303,7 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
 
     _write_in_mst_file_(tsp_get_name(), limit, limit);
     free(edge_arr);
-    _end_profile_();
+    end_profile();
     
     return uf;
 }
