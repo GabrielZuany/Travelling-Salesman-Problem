@@ -38,26 +38,22 @@ void tour_create(Tour *tour , int start_city) {
         visited[i] = false;
     }
 
-    // Pilha para rastrear os nós a serem visitados
     int* stack = (int*)malloc(tour->num_cities * sizeof(int));
     int top = -1;
     int num_cities_visited = 0;
 
-    // Empilhe o nó inicial
     stack[++top] = start_city;
 
     while (top >= 0) {
-        // Desempilhe um nó
+        
         int vertex = stack[top--];
 
-        // Se o nó ainda não foi visitado
         if (!visited[vertex]) {
             tour->tour[num_cities_visited] = vertex;
             num_cities_visited++;
             visited[vertex] = true;
         }
 
-        // Empilhe os nós adjacentes não visitados
         Node* current = tour->adjacent_list[vertex]->head;
         
         while (current != NULL) {
