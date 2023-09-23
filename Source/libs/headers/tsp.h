@@ -98,12 +98,37 @@ unsigned int pascal_size(unsigned short int n_memb);
  */
 union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_fn vertex_destroy);
 
+/**
+ * @brief 
+ * 
+ * @return ForwardList** 
+ */
 ForwardList** _get_adjacency_list_();
 
+/**
+ * @brief 
+ * 
+ * @return char* 
+ */
 char* tsp_get_name();
 
+/**
+ * @brief 
+ * 
+ */
 void end_profile();
 
+/**
+ * @brief 
+ * 
+ * @param data 
+ */
+void profile(float data);
+
+/**
+ * @brief 
+ * 
+ */
 void profile_init();
 
 #endif

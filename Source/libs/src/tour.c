@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 
 struct Tour{
     ForwardList **adjacent_list;
@@ -31,6 +32,8 @@ void tour_destroy(Tour *tour){
 }
 
 void tour_create(Tour *tour , int start_city) {
+
+    clock_t tour_clk = clock();
     
     bool* visited = (bool*)malloc(tour->num_cities * sizeof(bool));
 
@@ -67,6 +70,9 @@ void tour_create(Tour *tour , int start_city) {
             current = current->next;
         }
     }
+
+    float time = (float)(clock() - tour_clk)/CLOCKS_PER_SEC;
+    profile(time);
 
     free(visited);
     free(stack);
