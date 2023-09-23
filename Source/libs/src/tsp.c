@@ -292,6 +292,7 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
             if(uf_union(uf, tree_node1, tree_node2) == True){ // O(2 ln(N))
                 _write_in_mst_file_(tsp_get_name(), vertex1_idx + 1, vertex2_idx + 1);
                 forward_list_push_front(vertex1_idx, arr_adjacency_lists[vertex1_idx], vertex2_idx);
+                forward_list_push_front(vertex2_idx, arr_adjacency_lists[vertex2_idx], vertex1_idx);
                 edges++;
             }
         }
@@ -301,16 +302,9 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
         }
     }
 
-    for(int i=0; i<n_memb; i++){
-        printf("City Id [%d]: ", i+1);
-        forward_list_print(arr_adjacency_lists[i], print_int);
-        printf("\n---\n\n");
-    }
-
     _write_in_mst_file_(tsp_get_name(), limit, limit);
     free(edge_arr);
-    free(tsp_get_name());
     _end_profile_();
-    _adjacency_list_destroy_(n_memb);
+    
     return uf;
 }

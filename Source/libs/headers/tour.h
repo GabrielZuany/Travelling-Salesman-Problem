@@ -11,8 +11,8 @@ void tour_destroy(Tour *tour);
 
 int find_next_adjacent(Tour *tour, int *estado, int idx);
 
-void tour_create(Tour *tour);
+void tour_create(Tour *tour , int start_city);
 
-void tour_write_file(Tour *tour, char *path);
+void tour_write_file(Tour *tour);
 
 #endif
