@@ -41,6 +41,6 @@ if __name__ == "__main__":
     benchmark_plot(benchmark_df, 'BUILD_ALL_EDGES', 'Build all edges time', 'g')
     benchmark_plot(benchmark_df, 'SORT_EDGES', 'Sort edges time', '#FFA500')
     benchmark_plot(benchmark_df, 'BUILD_MST', 'Build MST time', '#FF00FF')
-    # benchmark_plot(benchmark_df, 'BUILD_TOUR', 'Build tour time', 'r')
+    benchmark_plot(benchmark_df, 'BUILD_TOUR', 'Build tour time', 'r')
 
     benchmark_full_plot(benchmark_df)

@@ -17,15 +17,19 @@ struct edge{
 // ==================== PROFILE ====================
 
 void __prof_set_header__(FILE* out){
-    //fprintf(out, "N_MEMB;READ_TSP;BUILD_ALL_EDGES;BUILD_MST;BUILD_TOUR;\n");
     fwrite("N_MEMB;READ_TSP;BUILD_ALL_EDGES;SORT_EDGES;BUILD_MST;BUILD_TOUR;", sizeof(char), 64, out);
     fputc('\n', out);
 }
 
 void profile_init(){
-    FILE* prof = fopen(PROFILER_OUTPUT_PATH, "w");
-    __prof_set_header__(prof);
-    fclose(prof);
+    FILE* f = fopen(PROFILER_OUTPUT_PATH, "r");
+    if(f == NULL){
+        FILE* prof = fopen(PROFILER_OUTPUT_PATH, "w");
+        __prof_set_header__(prof);
+        fclose(prof);
+    }else{
+        fclose(f);
+    }
 }
 
 void profile(float data){
@@ -176,7 +180,7 @@ void _write_in_mst_file_(char* name, unsigned short int idx1, unsigned short int
 
 // ============= BUILD CONNECTIONS =============
 
-unsigned int pascal_size(unsigned short int n_memb){
+unsigned int all_possible_edges_length(unsigned short int n_memb){
     return ((n_memb-1)*((n_memb-1)+1))/2;
 }
 
@@ -192,9 +196,9 @@ int _edge_cmp_(const void* a, const void* b){
     }
 }
 
-edge* pascal_connections(vertex** nodes, unsigned short int n_memb){
+edge* all_possible_edges(vertex** nodes, unsigned short int n_memb){
     unsigned int position = 0;
-    unsigned int size = pascal_size(n_memb);
+    unsigned int size = all_possible_edges_length(n_memb);
     edge* edges = malloc(sizeof(edge) * size);
     clock_t t = clock();
 
@@ -270,12 +274,12 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
     _set_graph_vertices_(uf,  points, n_memb);
 
     // connect each node to another and sort them by distance
-    edge* edge_arr = pascal_connections(points, n_memb);
+    edge* edge_arr = all_possible_edges(points, n_memb);
    
     // build mst and tour
     unsigned short int max_edges = n_memb - 1;
     unsigned short int edges = 0;
-    unsigned int total_edges = pascal_size(n_memb);
+    unsigned int total_edges = all_possible_edges_length(n_memb);
     clock_t mst_clk = clock();
 
     for(unsigned int i = 0; i < total_edges; i++){

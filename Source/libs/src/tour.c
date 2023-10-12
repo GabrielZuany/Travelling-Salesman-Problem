@@ -12,55 +12,48 @@ struct Tour{
     int num_cities;
 };
 
-Tour *tour_construct(ForwardList **adjacent_list, int num_cities){
+Tour *tour_construct(){
+    int size = tsp_get_dimension();
     Tour *tour = (Tour*) malloc(sizeof(Tour));
-    tour->adjacent_list = adjacent_list;
-    tour->tour = (int*) calloc(num_cities,sizeof(int));
-    tour->num_cities = num_cities;
+    tour->adjacent_list = _get_adjacency_list_();
+    tour->tour = (int*) calloc(size, sizeof(int));
+    tour->num_cities = size;
 
     return tour;
 }
 
 void tour_destroy(Tour *tour){
-
-    for(int i=0; i < tour->num_cities; i++)
+    for(int i=0; i < tour->num_cities; i++){
         forward_list_destroy(tour->adjacent_list[i]);
-
+    }
     free(tour->adjacent_list);
     free(tour->tour);
     free(tour);
 }
 
-void tour_create(Tour *tour , int start_city) {
-
-    clock_t tour_clk = clock();
-    
+void tour_run(Tour *tour , int start_city) {
+    clock_t clk = clock();
     bool* visited = (bool*)malloc(tour->num_cities * sizeof(bool));
-
     for (int i = 0; i < tour->num_cities; i++) {
         visited[i] = false;
     }
 
-    // Pilha para rastrear os nós a serem visitados
     int* stack = (int*)malloc(tour->num_cities * sizeof(int));
     int top = -1;
     int num_cities_visited = 0;
 
-    // Empilhe o nó inicial
     stack[++top] = start_city;
 
     while (top >= 0) {
-        // Desempilhe um nó
+        
         int vertex = stack[top--];
 
-        // Se o nó ainda não foi visitado
         if (!visited[vertex]) {
             tour->tour[num_cities_visited] = vertex;
             num_cities_visited++;
             visited[vertex] = true;
         }
 
-        // Empilhe os nós adjacentes não visitados
         Node* current = tour->adjacent_list[vertex]->head;
         
         while (current != NULL) {
@@ -70,16 +63,13 @@ void tour_create(Tour *tour , int start_city) {
             current = current->next;
         }
     }
-
-    float time = (float)(clock() - tour_clk)/CLOCKS_PER_SEC;
-    profile(time);
-
+    _end_clk_(clk);
+    _tour_write_file_(tour);
     free(visited);
     free(stack);
 }
 
-void tour_write_file(Tour *tour){
-
+void _tour_write_file_(Tour *tour){
     char *path = malloc(sizeof(char)*100);
     path = strcpy(path, "Outputs/tour/");
     path = strcat(path, tsp_get_name());
@@ -89,7 +79,7 @@ void tour_write_file(Tour *tour){
     FILE *arq = fopen(path,"w");
 
     if(arq == NULL){
-        printf("Erro ao abrir o arquivo");
+        printf("Error opening file! You must have 'Outputs/tour/' folder!\n");
         exit(1);
     }
     
@@ -100,12 +90,11 @@ void tour_write_file(Tour *tour){
 
 
     for(int i=0; i < tour->num_cities; i++)
-        fprintf(arq,"%d\n", tour->tour[i]);
+        fprintf(arq,"%d\n", (tour->tour[i])+1);
     
     fprintf(arq,"EOF");
 
     fclose(arq);
-
     free(tsp_get_name());
     free(path);
 }
