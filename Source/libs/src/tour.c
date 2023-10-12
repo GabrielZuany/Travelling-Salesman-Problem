@@ -11,29 +11,27 @@ struct Tour{
     int num_cities;
 };
 
-Tour *tour_construct(ForwardList **adjacent_list, int num_cities){
+Tour *tour_construct(){
+    int size = tsp_get_dimension();
     Tour *tour = (Tour*) malloc(sizeof(Tour));
-    tour->adjacent_list = adjacent_list;
-    tour->tour = (int*) calloc(num_cities,sizeof(int));
-    tour->num_cities = num_cities;
+    tour->adjacent_list = _get_adjacency_list_();
+    tour->tour = (int*) calloc(size, sizeof(int));
+    tour->num_cities = size;
 
     return tour;
 }
 
 void tour_destroy(Tour *tour){
-
-    for(int i=0; i < tour->num_cities; i++)
+    for(int i=0; i < tour->num_cities; i++){
         forward_list_destroy(tour->adjacent_list[i]);
-
+    }
     free(tour->adjacent_list);
     free(tour->tour);
     free(tour);
 }
 
-void tour_create(Tour *tour , int start_city) {
-    
+void tour_run(Tour *tour , int start_city) {
     bool* visited = (bool*)malloc(tour->num_cities * sizeof(bool));
-
     for (int i = 0; i < tour->num_cities; i++) {
         visited[i] = false;
     }
@@ -64,12 +62,12 @@ void tour_create(Tour *tour , int start_city) {
         }
     }
 
+    _tour_write_file_(tour);
     free(visited);
     free(stack);
 }
 
-void tour_write_file(Tour *tour){
-
+void _tour_write_file_(Tour *tour){
     char *path = malloc(sizeof(char)*100);
     path = strcpy(path, "Outputs/tour/");
     path = strcat(path, tsp_get_name());
@@ -79,7 +77,7 @@ void tour_write_file(Tour *tour){
     FILE *arq = fopen(path,"w");
 
     if(arq == NULL){
-        printf("Erro ao abrir o arquivo");
+        printf("Error opening file! You must have 'Outputs/tour/' folder!\n");
         exit(1);
     }
     
@@ -95,7 +93,6 @@ void tour_write_file(Tour *tour){
     fprintf(arq,"EOF");
 
     fclose(arq);
-
     free(tsp_get_name());
     free(path);
 }

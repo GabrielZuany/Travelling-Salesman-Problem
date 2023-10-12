@@ -6,34 +6,40 @@
 typedef struct Tour Tour;
 
 /**
- * @brief Cria uma estrutura do Tour
+ * @brief Init the tour
  * 
- * @param adjacent_list lista de vertices adjacentes para aplicar o DFS
- * @param num_cities 
  * @return Tour* 
+ * 
+ * @note Complexity: O(n)
  */
-Tour *tour_construct(ForwardList **adjacent_list, int num_cities);
+Tour *tour_construct();
 
 /**
- * @brief Libera a memoria alocada pelo tour
+ * @brief Dealloc the tour memory.
  * 
  * @param tour 
+ * 
+ * @note Complexity: O(n)
  */
 void tour_destroy(Tour *tour);
 
 /**
- * @brief Aplica o DFS recursivamente para criar o tour
+ * @brief Run the DFS algorithm to find a valid tour.
  * 
  * @param tour 
  * @param start_city 
+ * 
+ * @note Complexity: O(V + E) -> O(n)
  */
-void tour_create(Tour *tour , int start_city);
+void tour_run(Tour *tour , int start_city);
 
 /**
- * @brief Escreve o arquivo do tour
+ * @brief Write the tour to a file.
  * 
- * @param tour 
+ * @param tour
+ * 
+ * @note Complexity: O(n) 
  */
-void tour_write_file(Tour *tour);
+void _tour_write_file_(Tour *tour);
 
 #endif
