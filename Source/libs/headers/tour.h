@@ -5,14 +5,41 @@
 
 typedef struct Tour Tour;
 
-Tour *tour_construct(ForwardList **adjacent_list, int num_cities);
+/**
+ * @brief Init the tour
+ * 
+ * @return Tour* 
+ * 
+ * @note Complexity: O(n)
+ */
+Tour *tour_construct();
 
+/**
+ * @brief Dealloc the tour memory.
+ * 
+ * @param tour 
+ * 
+ * @note Complexity: O(n)
+ */
 void tour_destroy(Tour *tour);
 
-int find_next_adjacent(Tour *tour, int *estado, int idx);
+/**
+ * @brief Run the DFS algorithm to find a valid tour.
+ * 
+ * @param tour 
+ * @param start_city 
+ * 
+ * @note Complexity: O(V + E) -> O(n)
+ */
+void tour_run(Tour *tour , int start_city);
 
-void tour_create(Tour *tour , int start_city);
-
-void tour_write_file(Tour *tour);
+/**
+ * @brief Write the tour to a file.
+ * 
+ * @param tour
+ * 
+ * @note Complexity: O(n) 
+ */
+void _tour_write_file_(Tour *tour);
 
 #endif
