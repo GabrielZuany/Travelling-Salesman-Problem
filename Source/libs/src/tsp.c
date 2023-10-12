@@ -32,16 +32,16 @@ void profile_init(){
     }
 }
 
-void _profile_(float data){
+void profile(float data){
     FILE* prof = fopen(PROFILER_OUTPUT_PATH, "a");
-    fprintf(prof, "%.6f;", data);
+    fprintf(prof, "%.8f;", data);
     fclose(prof);
 }
 
 void _end_clk_(clock_t t){
     t = clock() - t;
     float time_taken = ((float)t)/CLOCKS_PER_SEC;
-    _profile_(time_taken);
+    profile(time_taken);
 }
 
 void end_profile(){
@@ -141,7 +141,7 @@ vertex** tsp_read(char* filepath){
         points[i] = vertex_init(x, y);
     }
 
-    _profile_(dimension);
+    profile(dimension);
     _end_clk_(t);
 
     fclose(file);
