@@ -3,7 +3,7 @@ echo "Running random.py"
 python3 "RandomInputs/rand.py"
 
 echo "Running make rand"
-make read_test
+make
 
 for file in ./Others/exemplos/exemplos/in/*.tsp
 do

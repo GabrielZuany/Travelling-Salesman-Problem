@@ -5,6 +5,7 @@
 #include "../headers/union_find.h"
 #include "../headers/utils.h"
 #include "../headers/forward_list.h"
+#include <time.h>
 
 #define nan -1
 typedef char opcode;
@@ -32,6 +33,8 @@ void profile_init();
  * @note Complexity: O(1)
  */
 void end_profile();
+
+void _end_clk_(clock_t t);
 
 
 // ================== READ AND WRITE =====================//

@@ -22,9 +22,14 @@ void __prof_set_header__(FILE* out){
 }
 
 void profile_init(){
-    FILE* prof = fopen(PROFILER_OUTPUT_PATH, "w");
-    __prof_set_header__(prof);
-    fclose(prof);
+    FILE* f = fopen(PROFILER_OUTPUT_PATH, "r");
+    if(f == NULL){
+        FILE* prof = fopen(PROFILER_OUTPUT_PATH, "w");
+        __prof_set_header__(prof);
+        fclose(prof);
+    }else{
+        fclose(f);
+    }
 }
 
 void _profile_(float data){
@@ -301,8 +306,6 @@ union_find* tsp_build_tree(vertex** points, compare_fn vertex_compare, destroy_f
     }
 
     _write_in_mst_file_(tsp_get_name(), limit, limit);
-    free(edge_arr);
-    end_profile();
-    
+    free(edge_arr);    
     return uf;
 }
