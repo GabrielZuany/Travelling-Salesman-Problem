@@ -90,7 +90,7 @@ void tour_write_file(Tour *tour){
 
 
     for(int i=0; i < tour->num_cities; i++)
-        fprintf(arq,"%d\n", tour->tour[i]);
+        fprintf(arq,"%d\n", (tour->tour[i])+1);
     
     fprintf(arq,"EOF");
 
